@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наш Смак — Солодощі для всієї родини</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                nunito: ['Nunito', 'sans-serif'],
+                montserrat: ['Montserrat', 'sans-serif'],
+              },
+              animation: {
+                'float-slow': 'float 3s ease-in-out infinite',
+              },
+              keyframes: {
+                float: {
+                  '0%, 100%': { transform: 'translateY(0) rotate(12deg)' },
+                  '50%': { transform: 'translateY(-10px) rotate(12deg)' },
+                }
+              }
+            },
+          },
+        }
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+      iconify-icon { display: inline-flex; align-items: center; justify-content: center; }
+      
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .card-animate { animation: fadeUp 0.3s ease-out forwards; opacity: 0; }
+      
+      @keyframes pop {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.4); }
+          100% { transform: scale(1); }
+      }
+      .cart-pop { animation: pop 0.3s ease-out; }
+    </style>
+</head>
+<body class="bg-[#FFF7EE] text-[#470D04] font-montserrat antialiased selection:bg-[#00BD13] selection:text-[#FFFFFF]">
+
+    <div class="bg-[#00BD13] text-[#FFFFFF] text-xs font-semibold text-center py-2.5 px-4 tracking-wide z-[60] relative">
+        Свіжі солодощі з доставкою за 2-3 дні. Безкоштовна доставка від 1000 грн.
+    </div>
+
+    <header class="bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#470D04]/10 sticky top-0 z-[60] w-full shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="w-1/4">
+                <a href="index.html" class="font-nunito text-3xl font-extrabold tracking-tight text-[#00BD13] uppercase flex items-center">
+                    Наш Смак
+                </a>
+            </div>
+
+            <nav class="hidden lg:flex w-2/4 justify-center gap-8 items-center font-montserrat">
+                <div class="group relative py-8">
+                    <a href="catalog.html" class="text-sm font-semibold text-[#470D04] group-hover:text-[#00BD13] transition inline-flex items-center justify-center gap-1.5">
+                        Каталог <iconify-icon icon="solar:alt-arrow-down-bold" class="text-[10px] mt-0.5"></iconify-icon>
+                    </a>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-[#FFFFFF] border border-[#470D04]/10 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-2">
+                        <a href="constructor.html" class="px-4 py-3 text-sm text-[#00BD13] font-bold hover:bg-[#FFF7EE] rounded-xl transition flex items-center gap-2">
+                            <iconify-icon icon="solar:box-minimalistic-bold" class="text-lg"></iconify-icon>
+                            Конструктор боксів
+                        </a>
+                        <div class="h-px bg-[#470D04]/5 my-1 mx-2"></div>
+                        <a href="catalog.html" class="block px-4 py-2.5 text-sm font-medium text-[#470D04] hover:bg-[#FFF7EE] hover:text-[#00BD13] rounded-xl transition">Подарункові набори</a>
+                        <a href="catalog.html" class="block px-4 py-2.5 text-sm font-medium text-[#470D04] hover:bg-[#FFF7EE] hover:text-[#00BD13] rounded-xl transition">Печиво</a>
+                        <a href="catalog.html" class="block px-4 py-2.5 text-sm font-medium text-[#470D04] hover:bg-[#FFF7EE] hover:text-[#00BD13] rounded-xl transition">Донати</a>
+                        <a href="catalog.html" class="block px-4 py-2.5 text-sm font-medium text-[#470D04] hover:bg-[#FFF7EE] hover:text-[#00BD13] rounded-xl transition">Мафіни</a>
+                    </div>
+                </div>
+                <a href="about.html" class="text-sm font-semibold text-[#470D04] hover:text-[#00BD13] transition">Про нас</a>
+                <a href="#" class="text-sm font-semibold text-[#470D04] hover:text-[#00BD13] transition">Оплата і доставка</a>
+                <a href="#" class="text-sm font-semibold text-[#470D04] hover:text-[#00BD13] transition">Контакти</a>
+            </nav>
+
+            <div class="w-1/4 flex items-center justify-end gap-6 font-montserrat">
+                <a href="#" class="hidden xl:inline-flex items-center justify-center text-xs font-bold text-[#FFFFFF] bg-[#00BD13] rounded-full px-5 py-2.5 hover:bg-[#470D04] transition shadow-sm">B2B Клієнтам</a>
+                <div class="flex gap-4 text-[#470D04]">
+                    <button class="w-10 h-10 rounded-full hover:bg-[#FFF7EE] hover:text-[#FF3B30] transition relative inline-flex items-center justify-center">
+                        <iconify-icon icon="solar:heart-linear" class="text-xl"></iconify-icon>
+                        <span id="global-fav-counter" class="absolute top-0 right-0 bg-[#FF3B30] text-[#FFFFFF] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white transition-transform scale-0">0</span>
+                    </button>
+
+                    <button class="w-10 h-10 rounded-full hover:bg-[#FFF7EE] hover:text-[#00BD13] transition inline-flex items-center justify-center">
+                        <iconify-icon icon="solar:user-linear" class="text-xl"></iconify-icon>
+                    </button>
+
+                    <button class="w-10 h-10 rounded-full hover:bg-[#FFF7EE] hover:text-[#00BD13] transition relative inline-flex items-center justify-center">
+                        <iconify-icon icon="solar:cart-large-2-linear" class="text-xl"></iconify-icon>
+                        <span class="absolute top-0 right-0 bg-[#FFCD05] text-[#470D04] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-[#FFF7EE] py-12 lg:py-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 z-10">
+                <div class="space-y-5">
+                    <span class="inline-flex text-[#957FEF] text-xs font-bold uppercase tracking-widest border border-[#957FEF]/30 bg-[#957FEF]/5 px-4 py-1.5 rounded-full font-montserrat items-center gap-2">
+                        <iconify-icon icon="solar:stars-minimalistic-bold"></iconify-icon> Лімітована серія
+                    </span>
+                    <h1 class="font-nunito text-5xl lg:text-7xl font-extrabold tracking-tight text-[#470D04] leading-[1.1]">Смак, який<br>об'єднує родину</h1>
+                    <p class="text-[#470D04]/80 text-base lg:text-lg max-w-md font-medium leading-relaxed font-montserrat">
+                        Свіжоспечене печиво та донати в естетичних подарункових коробках. Готуємо з любов'ю та відправляємо одразу після випікання.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-4 items-center font-montserrat">
+                    <a href="catalog.html" class="bg-[#00BD13] text-[#FFFFFF] px-8 py-4 rounded-full text-sm font-bold hover:bg-[#470D04] transition shadow-md inline-flex items-center justify-center gap-2">
+                        Перейти до каталогу <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
+                    </a>
+                    <a href="constructor.html" class="text-[#470D04] bg-[#FFFFFF] px-8 py-4 rounded-full text-sm font-bold hover:text-[#00BD13] hover:shadow-md transition shadow-sm border border-[#470D04]/5 inline-flex items-center justify-center">
+                        Зібрати свій бокс
+                    </a>
+                </div>
+            </div>
+            
+            <div class="relative w-full aspect-square max-w-lg mx-auto lg:mx-0 lg:ml-auto">
+                <div class="absolute inset-0 bg-[#FFCD05] rounded-full transform rotate-3 scale-100 blur-3xl opacity-20 z-0"></div>
+                <div class="absolute inset-0 rounded-[3rem] shadow-2xl overflow-hidden z-10">
+                    <img src="https://levainbakery.com/cdn/shop/files/PDP-Gallery-Assortment_Signature_1_4624f57c-61c9-4128-ac1c-0dc7bdf3455c.png?v=1750092385&width=1100" alt="Коробка солодощів" class="object-cover w-full h-full hover:scale-105 transition duration-700">
+                </div>
+                <div class="absolute -right-4 -top-4 w-28 h-28 bg-[#FFCD05] rounded-full shadow-lg flex items-center justify-center transform rotate-12 border-4 border-[#FFFFFF] animate-float-slow z-20">
+                    <span class="text-center text-[14px] font-bold text-[#470D04] uppercase tracking-wider leading-tight font-montserrat">100%<br>Свіже</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 bg-[#FFFFFF] border-y border-[#470D04]/5 font-montserrat">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="flex flex-col items-center text-center space-y-3">
+                <div class="w-14 h-14 rounded-full bg-[#FFF7EE] flex items-center justify-center text-[#00BD13] mb-1">
+                    <iconify-icon icon="solar:box-bold-duotone" class="text-3xl"></iconify-icon>
+                </div>
+                <h4 class="font-nunito font-bold text-[#470D04] text-base tracking-tight">Естетичне пакування</h4>
+                <p class="text-xs text-[#470D04]/70 max-w-[180px] font-medium">Ідеально підходить для подарунка близьким.</p>
+            </div>
+            <div class="flex flex-col items-center text-center space-y-3">
+                <div class="w-14 h-14 rounded-full bg-[#FFF7EE] flex items-center justify-center text-[#00BD13] mb-1">
+                    <iconify-icon icon="solar:clock-circle-bold-duotone" class="text-3xl"></iconify-icon>
+                </div>
+                <h4 class="font-nunito font-bold text-[#470D04] text-base tracking-tight">Свіжість гарантовано</h4>
+                <p class="text-xs text-[#470D04]/70 max-w-[180px] font-medium">Випікаємо безпосередньо перед відправкою.</p>
+            </div>
+            <div class="flex flex-col items-center text-center space-y-3">
+                <div class="w-14 h-14 rounded-full bg-[#FFF7EE] flex items-center justify-center text-[#00BD13] mb-1">
+                    <iconify-icon icon="solar:routing-2-bold-duotone" class="text-3xl"></iconify-icon>
+                </div>
+                <h4 class="font-nunito font-bold text-[#470D04] text-base tracking-tight">Швидка доставка</h4>
+                <p class="text-xs text-[#470D04]/70 max-w-[180px] font-medium">Відправка протягом 2-3 днів по всій Україні.</p>
+            </div>
+            <div class="flex flex-col items-center text-center space-y-3">
+                <div class="w-14 h-14 rounded-full bg-[#FFF7EE] flex items-center justify-center text-[#00BD13] mb-1">
+                    <iconify-icon icon="solar:shield-check-bold-duotone" class="text-3xl"></iconify-icon>
+                </div>
+                <h4 class="font-nunito font-bold text-[#470D04] text-base tracking-tight">Якісні інгредієнти</h4>
+                <p class="text-xs text-[#470D04]/70 max-w-[180px] font-medium">Відбираємо тільки найкращі продукти.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#FFF7EE]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-6">
+                <div class="space-y-2">
+                    <h2 class="font-nunito text-4xl font-extrabold tracking-tight text-[#470D04]">Що ми готуємо</h2>
+                    <p class="text-base text-[#470D04]/70 font-medium font-montserrat">Оберіть категорію до смаку</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 font-montserrat">
+                <a href="catalog.html" class="group block">
+                    <div class="bg-[#FFFFFF] rounded-[2rem] p-4 border border-[#470D04]/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="aspect-square rounded-3xl bg-[#FFF7EE] overflow-hidden mb-5 relative">
+                            <img src="https://nashsmak.com.ua/storage/goods_images/j7OQ8dJ0rNp2i3feuvlJc5WPAzB5byYvVKqfghSa.jpg" alt="Набори" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="flex items-center justify-between px-2 pb-2">
+                            <span class="font-nunito text-[#470D04] font-bold text-lg tracking-tight">Набори</span>
+                            <div class="w-8 h-8 rounded-full bg-[#FFF7EE] flex items-center justify-center text-[#470D04] group-hover:bg-[#00BD13] group-hover:text-[#FFFFFF] transition">
+                                <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="catalog.html" class="group block">
+                    <div class="bg-[#FFFFFF] rounded-[2rem] p-4 border border-[#470D04]/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="aspect-square rounded-3xl bg-[#FFF7EE] overflow-hidden mb-5 relative">
+                            <img src="https://levainbakery.com/cdn/shop/files/PDP-Gallery-Cookies_DCCC_1_4f3735b9-b228-4e6f-b151-ee7b0ceb2f0f.png?v=1750091389&width=1100" alt="Печиво" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="flex items-center justify-between px-2 pb-2">
+                            <span class="font-nunito text-[#470D04] font-bold text-lg tracking-tight">Печиво</span>
+                            <div class="w-8 h-8 rounded-full bg-[#FFF7EE] flex items-center justify-center text-[#470D04] group-hover:bg-[#00BD13] group-hover:text-[#FFFFFF] transition">
+                                <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="catalog.html" class="group block">
+                    <div class="bg-[#FFFFFF] rounded-[2rem] p-4 border border-[#470D04]/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="aspect-square rounded-3xl bg-[#FFF7EE] overflow-hidden mb-5 relative">
+                            <img src="https://nashsmak.com.ua/storage/goods_images/4DSuE8ktKknMgVA8kfaavnuWdZnvB5Hh2FziA5Y7.webp" alt="Донати" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="flex items-center justify-between px-2 pb-2">
+                            <span class="font-nunito text-[#470D04] font-bold text-lg tracking-tight">Донати</span>
+                            <div class="w-8 h-8 rounded-full bg-[#FFF7EE] flex items-center justify-center text-[#470D04] group-hover:bg-[#00BD13] group-hover:text-[#FFFFFF] transition">
+                                <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="catalog.html" class="group block">
+                    <div class="bg-[#FFFFFF] rounded-[2rem] p-4 border border-[#470D04]/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="aspect-square rounded-3xl bg-[#FFF7EE] overflow-hidden mb-5 relative flex items-center justify-center bg-gradient-to-br from-[#FFF7EE] to-[#FFCD05]/20">
+                            <img src="https://nashsmak.com.ua/storage/goods_images/cwzIyIxbtqgsEPNhhMUKFktc5qAVsvKlXTz9pbq0.webp" alt="Мафіни" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="flex items-center justify-between px-2 pb-2">
+                            <span class="font-nunito text-[#470D04] font-bold text-lg tracking-tight">Мафіни</span>
+                            <div class="w-8 h-8 rounded-full bg-[#FFF7EE] flex items-center justify-center text-[#470D04] group-hover:bg-[#00BD13] group-hover:text-[#FFFFFF] transition">
+                                <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="mt-12 flex justify-center font-montserrat">
+                <a href="catalog.html" class="inline-flex items-center justify-center gap-2 bg-[#00BD13] text-[#FFFFFF] px-8 py-4 rounded-full text-sm font-bold hover:bg-[#470D04] transition shadow-md border border-[#470D04]/10">
+                    Переглянути весь каталог <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#FFFFFF]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col items-center mb-16 space-y-8">
+                <h2 class="font-nunito text-4xl font-extrabold tracking-tight text-[#470D04] text-center">Улюбленці наших клієнтів</h2>
+
+                <div class="flex flex-wrap justify-center gap-2 p-1.5 bg-[#FFF7EE] rounded-full border border-[#470D04]/5 font-montserrat">
+                    <button onclick="switchFavTab('Набори', this)" class="tab-btn px-8 py-2.5 rounded-full bg-[#470D04] text-[#FFFFFF] text-sm font-bold shadow-sm transition">Набори</button>
+                    <button onclick="switchFavTab('Печиво', this)" class="tab-btn px-8 py-2.5 rounded-full text-[#470D04] hover:bg-[#FFFFFF] text-sm font-bold transition">Печиво</button>
+                    <button onclick="switchFavTab('Новинки', this)" class="tab-btn px-8 py-2.5 rounded-full text-[#470D04] hover:bg-[#FFFFFF] text-sm font-bold transition">Новинки</button>
+                </div>
+            </div>
+
+            <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 font-montserrat min-h-[400px]">
+                </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#FFF7EE] font-montserrat relative">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="aspect-[4/3] rounded-[2rem] overflow-hidden relative group shadow-xl border border-[#470D04]/5">
+                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=1000&auto=format&fit=crop" alt="Процес випікання" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <div class="absolute inset-0 bg-[#470D04]/10 transition duration-300 group-hover:bg-transparent"></div>
+                <button class="absolute inset-0 m-auto w-16 h-16 bg-[#FFFFFF]/90 backdrop-blur-md rounded-full flex items-center justify-center text-[#470D04] hover:scale-110 hover:bg-[#00BD13] hover:text-[#FFFFFF] transition-all shadow-lg border border-[#470D04]/10">
+                    <iconify-icon icon="solar:play-bold" class="text-2xl ml-1"></iconify-icon>
+                </button>
+            </div>
+            
+            <div class="space-y-8">
+                <div class="space-y-4">
+                    <h2 class="font-nunito text-4xl lg:text-5xl font-extrabold tracking-tight text-[#470D04] leading-tight">Створюємо смак,<br>який об'єднує</h2>
+                    <p class="text-[#470D04]/80 text-base leading-relaxed font-medium">
+                        Ми в "Наш Смак" віримо, що найкращі моменти життя відбуваються за одним столом у колі найрідніших. Тому ми відбираємо найякісніші інгредієнти та вкладаємо любов у кожен виріб.
+                    </p>
+                    <p class="text-[#470D04]/80 text-base leading-relaxed font-medium">
+                        Всі наші солодощі випікаються безпосередньо перед відправкою, гарантуючи максимальну свіжість та неперевершений домашній смак.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6 pt-4 border-t border-[#470D04]/10">
+                    <div>
+                        <span class="block text-4xl font-nunito font-extrabold text-[#00BD13] mb-1 tracking-tighter">5+</span>
+                        <span class="text-xs text-[#470D04]/70 uppercase tracking-widest font-bold">Років досвіду</span>
+                    </div>
+                    <div>
+                        <span class="block text-4xl font-nunito font-extrabold text-[#00BD13] mb-1 tracking-tighter">10k</span>
+                        <span class="text-xs text-[#470D04]/70 uppercase tracking-widest font-bold">Щасливих родин</span>
+                    </div>
+                </div>
+                
+                <div class="pt-4">
+                    <a href="about.html" class="inline-flex items-center justify-center gap-2 bg-[#00BD13] text-[#FFFFFF] px-8 py-3.5 rounded-full text-sm font-bold hover:bg-[#470D04] transition shadow-md border border-[#470D04]/10">
+                        Більше про нас <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#FFCD05] relative overflow-hidden font-montserrat">
+        <div class="max-w-4xl mx-auto px-6 text-center space-y-10 relative z-10">
+            <div class="space-y-4">
+                <h2 class="font-nunito text-4xl lg:text-5xl font-extrabold tracking-tight text-[#470D04]">Збери свою ідеальну коробку</h2>
+                <p class="text-[#470D04]/80 text-lg max-w-2xl mx-auto leading-relaxed font-medium">
+                    Оберіть улюблені смаки та створіть унікальний набір. Ми дбайливо запакуємо його та відправимо вам.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 py-8">
+                <div class="flex flex-col items-center gap-3">
+                    <div class="w-16 h-16 rounded-full bg-[#FFFFFF] text-[#470D04] flex items-center justify-center text-2xl font-nunito font-bold shadow-sm">1</div>
+                    <span class="text-base font-bold text-[#470D04]">Обери розмір</span>
+                </div>
+                <div class="hidden md:block w-16 h-1 bg-[#FFFFFF]/50 rounded-full"></div>
+                <div class="flex flex-col items-center gap-3">
+                    <div class="w-16 h-16 rounded-full bg-[#FFFFFF] text-[#470D04] flex items-center justify-center text-2xl font-nunito font-bold shadow-sm">2</div>
+                    <span class="text-base font-bold text-[#470D04]">Додай солодощі</span>
+                </div>
+                <div class="hidden md:block w-16 h-1 bg-[#FFFFFF]/50 rounded-full"></div>
+                <div class="flex flex-col items-center gap-3">
+                    <div class="w-16 h-16 rounded-full bg-[#FFFFFF] text-[#470D04] flex items-center justify-center text-2xl font-nunito font-bold shadow-sm">3</div>
+                    <span class="text-base font-bold text-[#470D04]">Замовляй</span>
+                </div>
+            </div>
+            <a href="constructor.html" class="inline-flex items-center justify-center gap-2 bg-[#00BD13] text-[#FFFFFF] px-10 py-4 rounded-full text-base font-bold hover:bg-[#470D04] transition shadow-lg">
+                Створити набір <iconify-icon icon="solar:box-minimalistic-bold" class="text-xl"></iconify-icon>
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-[#470D04] text-[#FFF7EE] pt-20 pb-8 font-montserrat rounded-t-[3rem] mt-[-2rem] relative z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+            
+            <div class="lg:col-span-2 space-y-6">
+                <a href="index.html" class="font-nunito text-3xl font-extrabold tracking-tight text-[#FFFFFF] uppercase">Наш Смак</a>
+                <p class="text-sm text-[#FFF7EE]/80 max-w-sm leading-relaxed font-medium">
+                    Створюємо солодощі, які об'єднують родини за одним столом.
+                    Використовуємо лише натуральні інгредієнти та пакуємо з любов'ю.
+                </p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-12 h-12 shrink-0 rounded-full bg-[#FFFFFF]/10 flex items-center justify-center text-[#FFFFFF] hover:bg-[#00BD13] transition">
+                        <iconify-icon icon="solar:camera-bold" class="text-xl"></iconify-icon>
+                    </a>
+                    <a href="#" class="w-12 h-12 shrink-0 rounded-full bg-[#FFFFFF]/10 flex items-center justify-center text-[#FFFFFF] hover:bg-[#00BD13] transition">
+                        <iconify-icon icon="solar:letter-bold" class="text-xl"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-[#FFCD05] mb-6 text-sm tracking-widest uppercase">Каталог</h4>
+                <ul class="space-y-4 text-sm font-medium">
+                    <li><a href="constructor.html" class="hover:text-[#00BD13] transition">Конструктор наборів</a></li>
+                    <li><a href="catalog.html" class="hover:text-[#00BD13] transition">Подарункові набори</a></li>
+                    <li><a href="catalog.html" class="hover:text-[#00BD13] transition">Печиво</a></li>
+                    <li><a href="catalog.html" class="hover:text-[#00BD13] transition">Донати</a></li>
+                    <li><a href="catalog.html" class="hover:text-[#00BD13] transition">Мафіни</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-[#FFCD05] mb-6 text-sm tracking-widest uppercase">Клієнтам</h4>
+                <ul class="space-y-4 text-sm font-medium">
+                    <li><a href="about.html" class="hover:text-[#00BD13] transition">Про нас</a></li>
+                    <li><a href="#" class="hover:text-[#00BD13] transition">Оплата і доставка</a></li>
+                    <li><a href="#" class="hover:text-[#00BD13] transition">Повернення</a></li>
+                    <li><a href="#" class="hover:text-[#00BD13] transition">B2B Співпраця</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-[#FFCD05] mb-6 text-sm tracking-widest uppercase">Контакти</h4>
+                <ul class="space-y-4 text-sm font-medium">
+                    <li>
+                        <a href="tel:+380676750289" class="flex items-center gap-3 hover:text-[#00BD13] transition group">
+                            <div class="w-8 h-8 shrink-0 rounded-full bg-[#FFFFFF]/10 flex items-center justify-center text-[#00BD13] group-hover:bg-[#00BD13] group-hover:text-[#FFFFFF] transition">
+                                <iconify-icon icon="solar:phone-bold"></iconify-icon>
+                            </div>
+                            <span class="whitespace-nowrap">+38 067 675 02 89</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:shopnashsmak@gmail.com" class="flex items-center gap-3 hover:text-[#00BD13] transition group">
+                            <div class="w-8 h-8 shrink-0 rounded-full bg-[#FFFFFF]/10 flex items-center justify-center text-[#00BD13] group-hover:bg-[#00BD13] group-hover:text-[#FFFFFF] transition">
+                                <iconify-icon icon="solar:letter-bold"></iconify-icon>
+                            </div>
+                            <span class="break-all">shopnashsmak@gmail.com</span>
+                        </a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="w-8 h-8 shrink-0 rounded-full bg-[#FFFFFF]/10 flex items-center justify-center text-[#00BD13]">
+                            <iconify-icon icon="solar:clock-circle-bold"></iconify-icon>
+                        </div>
+                        <span class="whitespace-nowrap">8:00 – 17:00 пн-пт</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 pt-8 border-t border-[#FFFFFF]/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#FFF7EE]/50 font-medium">
+            <p>© 2026 Наш Смак. Всі права захищено.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-[#FFFFFF] transition">Політика конфіденційності</a>
+                <a href="#" class="hover:text-[#FFFFFF] transition">Публічна оферта</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const favProducts = [
+            { id: 5, category: 'Набори', title: 'Бокс «Великодній»', desc: 'Асорті з найкращих солодощів. Ідеально для вечірнього чаювання.', img: 'https://nashsmak.com.ua/storage/goods_images/NiZ5ovoJhmiU8l6DKrXeCpT2PLAO0Z3o7DvKrmYw.webp', price: 800, badge: { text: 'Бестселер', color: 'bg-[#FFCD05] text-[#470D04]' } },
+            { id: 10, category: 'Набори', title: 'Бокс «Асорті Донат»', desc: 'Велика коробка з різноманітними смаками донатів.', img: 'https://nashsmak.com.ua/storage/goods_images/a3rla4rejaUhrEo9SJ22zmWwzkN6qqVKU7iNztw0.webp', price: 450 },
+            { id: 11, category: 'Набори', title: 'Бокс «Мафін Полуничний»', desc: 'Ніжні мафіни зі свіжою полуничною начинкою.', img: 'https://nashsmak.com.ua/storage/goods_images/k22Sei1U4WMmzX5maLsctmAWHlFJKBcCyygcfZAu.webp', price: 550, badge: { text: 'Хіт', color: 'bg-[#957FEF] text-[#FFFFFF]' } },
+            { id: 12, category: 'Набори', title: 'Набір «Донат Мікс»', desc: 'Ідеальна комбінація класичних та глазурованих донатів.', img: 'https://nashsmak.com.ua/storage/goods_images/cznJO8KTsY4oqkBP6DYhojQMBrGE8SDwYAw3f9W6.webp', price: 345 },
+
+            { id: 2, category: 'Печиво', title: 'Печиво “Джайв”', desc: 'Хрустке печиво з насиченим смаком какао та шоколадними дропсами.', img: 'https://nashsmak.com.ua/storage/goods_images/CAiGkyHZhRMUjHH1rAiHxWGoWhn93XEpGZwmKXd3.webp', price: 140 },
+            { id: 4, category: 'Печиво', title: 'Печиво з родзинками', desc: 'Класичне світле печиво з додаванням меду та солодких родзинок.', img: 'https://nashsmak.com.ua/storage/goods_images/zM0WYDIu9djVc1l9RJyzh7QNQ0e59oPR6TK5pVqV.webp', price: 180 },
+            { id: 7, category: 'Печиво', title: 'Печиво “Білочка”', desc: 'Ніжне пісочне печиво з горішками та шоколадною глазур\'ю.', img: 'https://nashsmak.com.ua/storage/goods_images/UgrtNCi8Ac3NP7lWudQAiprQRp7VgKzN19VPW9Zm.jpg', price: 160, badge: { text: 'Класика', color: 'bg-[#00BD13] text-[#FFFFFF]' } },
+            { id: 13, category: 'Печиво', title: 'Печиво з додатками', desc: 'Світле печиво з шматками горіха або солодкими родзинками.', img: 'https://nashsmak.com.ua/storage/goods_images/rqdPaEtLJ8w04VVm38Qss3BHPXx41ED7ajIY7EsI.jpg', price: 145 },
+
+            { id: 3, category: 'Новинки', title: 'Донат “Ягідний”', desc: 'Ніжний пухкий донат з ароматною вишневою або полуничною начинкою.', img: 'https://nashsmak.com.ua/storage/goods_images/4DSuE8ktKknMgVA8kfaavnuWdZnvB5Hh2FziA5Y7.webp', price: 150, badge: { text: 'Новинка', color: 'bg-[#FFCD05] text-[#470D04]' } },
+            { id: 8, category: 'Новинки', title: 'Донат “Фруктовий”', desc: 'Повітряний донат, щедро наповнений фруктовим джемом.', img: 'https://nashsmak.com.ua/storage/goods_images/OCgariOMCVVrZYY6vwP0gTU6qO5GTBfOHtzcV3jU.webp', price: 150 },
+            { id: 6, category: 'Новинки', title: 'Мафін “Подвійний смак”', desc: 'Дуже шоколадний мафін з подвійними начинками.', img: 'https://nashsmak.com.ua/storage/goods_images/vxOAePXw5N1imUEo0TtzMsGbL5WdwY15I3LwiZnX.webp', price: 120 },
+            { id: 9, category: 'Новинки', title: 'Донат “Карамельний”', desc: 'М\'яке тісто з яскраво вираженим карамельним смаком.', img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=400&auto=format&fit=crop', price: 160 }
+        ];
+
+        let favoriteIds = new Set();
+        let currentFavTab = 'Набори';
+
+        function initFavorites() {
+            renderFavGrid();
+        }
+
+        function switchFavTab(tabName, btnEl) {
+            currentFavTab = tabName;
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-[#470D04]', 'text-[#FFFFFF]', 'shadow-sm');
+                b.classList.add('text-[#470D04]', 'hover:bg-[#FFFFFF]');
+            });
+            btnEl.classList.add('bg-[#470D04]', 'text-[#FFFFFF]', 'shadow-sm');
+            btnEl.classList.remove('text-[#470D04]', 'hover:bg-[#FFFFFF]');
+            
+            renderFavGrid();
+        }
+
+        function toggleHeart(pId) {
+            if (favoriteIds.has(pId)) favoriteIds.delete(pId);
+            else favoriteIds.add(pId);
+            
+            const counter = document.getElementById('global-fav-counter');
+            const count = favoriteIds.size;
+            counter.innerText = count;
+            
+            if(count > 0) {
+                counter.classList.remove('scale-0');
+                counter.classList.add('scale-100', 'cart-pop');
+                setTimeout(() => counter.classList.remove('cart-pop'), 300);
+            } else {
+                counter.classList.add('scale-0');
+                counter.classList.remove('scale-100');
+            }
+
+            const btn = document.getElementById(`heart-btn-${pId}`);
+            if(btn) {
+                const icon = btn.querySelector('iconify-icon');
+                if(favoriteIds.has(pId)) {
+                    icon.setAttribute('icon', 'solar:heart-bold');
+                    btn.classList.add('text-[#FF3B30]');
+                    btn.classList.remove('text-[#470D04]/40');
+                } else {
+                    icon.setAttribute('icon', 'solar:heart-linear');
+                    btn.classList.remove('text-[#FF3B30]');
+                    btn.classList.add('text-[#470D04]/40');
+                }
+            }
+        }
+
+        function renderFavGrid() {
+            const grid = document.getElementById('favorites-grid');
+            const items = favProducts.filter(p => p.category === currentFavTab);
+            
+            grid.innerHTML = items.map((p, index) => {
+                const isFav = favoriteIds.has(p.id);
+                const heartIcon = isFav ? 'solar:heart-bold' : 'solar:heart-linear';
+                const heartColor = isFav ? 'text-[#FF3B30]' : 'text-[#470D04]/40';
+                const badgeHtml = p.badge ? `<span class="absolute top-8 left-8 ${p.badge.color} text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full z-10 shadow-sm">${p.badge.text}</span>` : '';
+                
+                return `
+                <div class="group flex flex-col bg-[#FFFFFF] rounded-[2rem] p-4 border border-[#470D04]/10 hover:shadow-2xl hover:border-transparent transition-all duration-300 relative card-animate" style="animation-delay: ${index * 0.05}s">
+                    ${badgeHtml}
+                    <button id="heart-btn-${p.id}" onclick="toggleHeart(${p.id})" class="absolute top-8 right-8 w-8 h-8 bg-white rounded-full z-10 ${heartColor} hover:text-[#FF3B30] hover:scale-110 transition shadow-sm inline-flex items-center justify-center">
+                        <iconify-icon icon="${heartIcon}" class="text-lg"></iconify-icon>
+                    </button>
+                    <div class="aspect-square rounded-3xl bg-[#FFF7EE] mb-5 overflow-hidden relative">
+                        <img src="${p.img}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500" alt="${p.title}">
+                    </div>
+                    <h3 class="font-nunito text-xl font-bold text-[#470D04] mb-2 tracking-tight">${p.title}</h3>
+                    <p class="text-sm text-[#470D04]/70 mb-6 line-clamp-2 leading-relaxed font-medium">${p.desc}</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-[#470D04]/10">
+                        <span class="font-bold text-[#00BD13] text-xl">${p.price} ₴</span>
+                        <button class="inline-flex items-center justify-center gap-2 bg-[#00BD13] text-[#FFFFFF] px-5 py-2.5 rounded-full text-sm font-bold hover:bg-[#470D04] transition">
+                            В кошик <iconify-icon icon="solar:cart-large-2-bold" class="text-lg"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorites);
+    </script>
+</body>
+</html>

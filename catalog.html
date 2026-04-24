@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог — Наш Смак</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                nunito: ['Nunito', 'sans-serif'],
+                montserrat: ['Montserrat', 'sans-serif'],
+              },
+              colors: {
+                brand: {
+                    dark: '#470D04',
+                    green: '#00BD13',
+                    yellow: '#FFCD05',
+                    light: '#FFF7EE',
+                    beige: '#F6F4EE',
+                    white: '#FFFFFF',
+                    gray: '#F6F4EE'
+                }
+              }
+            },
+          },
+        }
+    </script>
+    
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <style>
+      iconify-icon { display: inline-flex; align-items: center; justify-content: center; }
+      
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .card-animate { animation: fadeUp 0.4s ease-out forwards; }
+      
+      /* Скролбар для мобільних ховаємо */
+      .hide-scroll::-webkit-scrollbar { display: none; }
+      .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; cursor: grab; }
+      .hide-scroll:active { cursor: grabbing; }
+      
+      /* Акуратний скролбар для ПК з мишкою */
+      @media (pointer: fine) {
+          .hide-scroll::-webkit-scrollbar { display: block; height: 6px; }
+          .hide-scroll::-webkit-scrollbar-track { background: transparent; }
+          .hide-scroll::-webkit-scrollbar-thumb { background: rgba(71, 13, 4, 0.1); border-radius: 10px; }
+          .hide-scroll::-webkit-scrollbar-thumb:hover { background: rgba(71, 13, 4, 0.25); }
+      }
+      
+      .qty-btn.active { border-color: #00BD13; color: #00BD13; background-color: rgba(0, 189, 19, 0.05); }
+      .filter-pill.active { background-color: #00BD13; color: #FFFFFF; border-color: #00BD13; }
+
+      @keyframes slideInRight {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOutRight {
+          from { transform: translateX(0); opacity: 1; }
+          to { transform: translateX(100%); opacity: 0; }
+      }
+      .toast-enter { animation: slideInRight 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+      .toast-exit { animation: slideOutRight 0.3s ease-in forwards; }
+      
+      @keyframes pop {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.5); }
+          100% { transform: scale(1); }
+      }
+      .cart-pop { animation: pop 0.3s ease-out; }
+    </style>
+</head>
+<body class="bg-brand-light text-brand-dark font-montserrat antialiased selection:bg-brand-green selection:text-brand-white pb-20">
+
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
+
+    <div id="cart-overlay" class="fixed inset-0 bg-brand-dark/40 z-[100] hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm" onclick="toggleCart()"></div>
+
+    <div id="register-modal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4">
+        <div id="register-overlay" class="absolute inset-0 bg-brand-dark/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeRegisterModal()"></div>
+        <div id="register-content" class="bg-brand-white rounded-[2rem] p-8 shadow-2xl relative z-10 w-full max-w-md mx-auto transform scale-95 opacity-0 transition-all duration-300 flex flex-col items-center">
+            <button onclick="closeRegisterModal()" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-brand-dark/40 hover:text-brand-dark hover:bg-brand-light transition">
+                <iconify-icon icon="solar:close-circle-bold" class="text-3xl"></iconify-icon>
+            </button>
+            <div class="w-16 h-16 bg-brand-light text-brand-green rounded-full flex items-center justify-center mb-6">
+                <iconify-icon icon="solar:user-rounded-bold" class="text-3xl"></iconify-icon>
+            </div>
+            <h3 class="font-nunito text-3xl font-extrabold text-brand-dark mb-2 text-center">Швидка реєстрація</h3>
+            <p class="text-sm text-brand-dark/60 font-medium text-center mb-8">Створіть профіль, щоб відстежувати замовлення та отримувати бонуси</p>
+            <button class="w-full bg-white border-2 border-brand-dark/10 py-3.5 rounded-2xl text-sm font-bold text-brand-dark hover:border-brand-green hover:bg-brand-light transition flex items-center justify-center gap-3 mb-6 shadow-sm">
+                <iconify-icon icon="logos:google-icon" class="text-xl"></iconify-icon> Продовжити з Google
+            </button>
+            <div class="flex items-center w-full gap-4 mb-6">
+                <div class="h-px bg-brand-dark/10 flex-grow"></div>
+                <span class="text-xs font-bold text-brand-dark/40 uppercase tracking-widest">Або</span>
+                <div class="h-px bg-brand-dark/10 flex-grow"></div>
+            </div>
+            <div class="w-full space-y-4">
+                <input type="email" placeholder="Ваша пошта" class="w-full px-5 py-4 bg-brand-light border border-brand-dark/10 rounded-2xl text-sm font-medium text-brand-dark focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green/20 transition placeholder:text-brand-dark/40">
+                <button class="w-full bg-brand-green text-brand-white py-4 rounded-2xl text-sm font-bold hover:bg-brand-dark transition shadow-md">Продовжити</button>
+            </div>
+            <p class="text-xs text-brand-dark/40 mt-6 text-center font-medium">
+                Реєструючись, ви погоджуєтеся з <a href="#" class="text-brand-green hover:underline">Політикою конфіденційності</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full md:w-[450px] h-full bg-brand-white z-[110] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-brand-dark/10 flex justify-between items-center bg-brand-white">
+            <h2 class="text-2xl font-extrabold text-brand-dark font-nunito flex items-center gap-2">
+                <iconify-icon icon="solar:cart-large-2-bold" class="text-brand-green"></iconify-icon> Кошик
+            </h2>
+            <button onclick="toggleCart()" class="text-brand-dark/50 hover:text-brand-dark transition w-10 h-10 flex items-center justify-center rounded-full hover:bg-brand-gray">
+                <iconify-icon icon="solar:close-circle-bold" class="text-3xl"></iconify-icon>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto p-6 flex flex-col gap-6 hide-scroll"></div>
+        <div class="p-6 border-t border-brand-dark/10 bg-brand-white">
+            <div class="flex justify-between items-end mb-6">
+                <span class="text-sm font-bold text-brand-dark/60 uppercase tracking-widest">До сплати:</span>
+                <span class="text-3xl font-extrabold text-brand-dark font-nunito" id="cart-total">0 ₴</span>
+            </div>
+            <button class="w-full bg-brand-green text-brand-white py-4 rounded-[1rem] text-base font-bold hover:bg-brand-dark transition-colors shadow-md flex items-center justify-center gap-2">
+                Оформити замовлення <iconify-icon icon="solar:alt-arrow-right-linear" class="text-xl"></iconify-icon>
+            </button>
+            <p class="text-center text-xs text-brand-dark/40 mt-3 font-semibold">Безкоштовна доставка від 1000 грн</p>
+        </div>
+    </div>
+
+    <div class="bg-brand-green text-brand-white text-xs font-semibold text-center py-2.5 px-4 tracking-wide z-50 relative">
+        Свіжі солодощі з доставкою за 2-3 дні. Безкоштовна доставка від 1000 грн.
+    </div>
+
+    <header class="bg-brand-white/95 backdrop-blur-md border-b border-brand-dark/10 sticky top-0 z-40 shadow-sm transition-all duration-300">
+        <div class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="w-1/4">
+                <a href="index.html" class="font-nunito text-3xl font-extrabold tracking-tight text-brand-green uppercase flex items-center">Наш Смак</a>
+            </div>
+
+            <nav class="hidden lg:flex w-2/4 justify-center gap-8 items-center font-montserrat">
+                <div class="group relative py-8">
+                    <a href="#" class="text-sm font-bold text-brand-green transition inline-flex items-center justify-center gap-1.5">
+                        Каталог <iconify-icon icon="solar:alt-arrow-down-bold" class="text-[10px] mt-0.5"></iconify-icon>
+                    </a>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-brand-white border border-brand-dark/10 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-2">
+                        <a href="constructor.html" class="px-4 py-3 text-sm text-brand-green font-bold hover:bg-brand-light rounded-xl transition flex items-center gap-2">
+                            <iconify-icon icon="solar:box-minimalistic-bold" class="text-lg"></iconify-icon> Конструктор боксів
+                        </a>
+                        <div class="h-px bg-brand-dark/5 my-1 mx-2"></div>
+                        <a href="#" class="block px-4 py-2.5 text-sm font-medium text-brand-dark hover:bg-brand-light hover:text-brand-green rounded-xl transition">Подарункові набори</a>
+                        <a href="#" class="block px-4 py-2.5 text-sm font-medium text-brand-dark hover:bg-brand-light hover:text-brand-green rounded-xl transition">Печиво</a>
+                        <a href="#" class="block px-4 py-2.5 text-sm font-medium text-brand-dark hover:bg-brand-light hover:text-brand-green rounded-xl transition">Донати</a>
+                        <a href="#" class="block px-4 py-2.5 text-sm font-medium text-brand-dark hover:bg-brand-light hover:text-brand-green rounded-xl transition">Мафіни</a>
+                    </div>
+                </div>
+                <a href="about.html" class="text-sm font-semibold text-brand-dark hover:text-brand-green transition">Про нас</a>
+                <a href="#" class="text-sm font-semibold text-brand-dark hover:text-brand-green transition">Оплата і доставка</a>
+                <a href="#" class="text-sm font-semibold text-brand-dark hover:text-brand-green transition">Контакти</a>
+            </nav>
+
+            <div class="w-1/4 flex items-center justify-end gap-6 font-montserrat">
+                <div class="flex gap-4 text-brand-dark">
+                    <button class="w-10 h-10 rounded-full hover:bg-brand-light hover:text-brand-green transition inline-flex items-center justify-center"><iconify-icon icon="solar:heart-linear" class="text-xl"></iconify-icon></button>
+                    
+                    <div class="relative">
+                        <button onclick="toggleAuthMenu()" id="auth-btn" class="w-10 h-10 rounded-full hover:bg-brand-light hover:text-brand-green transition inline-flex items-center justify-center">
+                            <iconify-icon icon="solar:user-linear" class="text-xl"></iconify-icon>
+                        </button>
+                        <div id="auth-dropdown" class="absolute top-full right-0 mt-2 w-64 bg-brand-white border border-brand-dark/10 rounded-3xl shadow-2xl opacity-0 invisible transition-all duration-200 transform translate-y-2 p-6 z-50">
+                            <p class="text-[13px] font-bold text-brand-dark mb-4 text-center">Вже маєте профіль?</p>
+                            <div class="flex flex-col gap-2">
+                                <button class="w-full py-3 bg-brand-light border border-brand-dark/5 text-brand-dark rounded-xl text-sm font-bold hover:border-brand-green hover:text-brand-green transition shadow-sm">Увійти</button>
+                                <button onclick="openRegisterModal()" class="w-full py-3 bg-brand-green text-brand-white rounded-xl text-sm font-bold hover:bg-brand-dark transition shadow-md">Зареєструватися</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="toggleCart()" class="w-10 h-10 rounded-full hover:bg-brand-light hover:text-brand-green transition relative inline-flex items-center justify-center ml-2">
+                        <iconify-icon icon="solar:cart-large-2-linear" class="text-xl"></iconify-icon>
+                        <span id="global-cart-counter" class="absolute top-0 right-0 bg-brand-yellow text-brand-dark text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white transition-transform">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1400px] mx-auto px-6 py-12">
+        <div class="mb-10 text-center lg:text-left">
+            <h1 class="font-nunito text-4xl lg:text-5xl font-extrabold tracking-tight text-brand-dark mb-4">Наш Асортимент</h1>
+            <p class="text-brand-dark/70 font-medium max-w-2xl mx-auto lg:mx-0">Обирайте улюблені смаки та збирайте кошик для себе або на подарунок.</p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8 relative z-20 items-start">
+            
+            <div class="w-full lg:w-[280px] flex-shrink-0 lg:sticky lg:top-24">
+                <div class="bg-brand-white rounded-[2rem] p-6 shadow-sm border border-brand-dark/5">
+                    
+                    <div class="flex justify-between items-center pb-4 border-b border-brand-dark/10">
+                        <h2 class="font-nunito text-xl font-bold text-brand-dark tracking-tight">Фільтри</h2>
+                        <button id="clear-filters-btn" onclick="clearFilters()" class="hidden text-xs font-bold text-[#FF3B30] hover:underline flex items-center gap-1">Скинути</button>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="py-4 border-b border-brand-dark/5">
+                            <button class="w-full flex justify-between items-center text-[13px] font-bold text-brand-dark uppercase tracking-widest hover:text-brand-green transition" onclick="toggleAccordion(this)">
+                                Категорії
+                                <iconify-icon icon="solar:alt-arrow-down-bold" class="chevron transition-transform duration-300 rotate-180"></iconify-icon>
+                            </button>
+                            <div class="mt-4">
+                                <div class="flex flex-wrap gap-2" id="filter-categories"></div>
+                            </div>
+                        </div>
+
+                        <div class="py-4 border-b border-brand-dark/5">
+                            <button class="w-full flex justify-between items-center text-[13px] font-bold text-brand-dark uppercase tracking-widest hover:text-brand-green transition" onclick="toggleAccordion(this)">
+                                Склад та дієти
+                                <iconify-icon icon="solar:alt-arrow-down-bold" class="chevron transition-transform duration-300"></iconify-icon>
+                            </button>
+                            <div class="mt-4 hidden">
+                                <div class="flex flex-wrap gap-2" id="filter-features"></div>
+                            </div>
+                        </div>
+
+                        <div class="py-4">
+                            <h3 class="text-[13px] uppercase tracking-widest font-bold text-brand-dark mb-4">Напрямок смаку</h3>
+                            <div id="filter-flavors-grouped" class="space-y-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-grow w-full">
+                <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 min-h-[400px]"></div>
+                <div class="mt-16 flex justify-center items-center gap-2 font-montserrat" id="pagination-container"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // ЛОГІКА АВТОРИЗАЦІЇ
+        function toggleAuthMenu() {
+            const menu = document.getElementById('auth-dropdown');
+            if (menu.classList.contains('opacity-0')) {
+                menu.classList.remove('opacity-0', 'invisible', 'translate-y-2'); menu.classList.add('opacity-100', 'visible', 'translate-y-0');
+            } else { closeAuthMenu(); }
+        }
+        function closeAuthMenu() {
+            const menu = document.getElementById('auth-dropdown');
+            menu.classList.add('opacity-0', 'invisible', 'translate-y-2'); menu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+        }
+        document.addEventListener('click', (e) => {
+            const authBtn = document.getElementById('auth-btn'); const authDropdown = document.getElementById('auth-dropdown');
+            if (authDropdown && !authBtn.contains(e.target) && !authDropdown.contains(e.target)) closeAuthMenu();
+        });
+        function openRegisterModal() {
+            closeAuthMenu();
+            const modal = document.getElementById('register-modal'); const overlay = document.getElementById('register-overlay'); const content = document.getElementById('register-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => { overlay.classList.remove('opacity-0'); content.classList.remove('scale-95', 'opacity-0'); content.classList.add('scale-100', 'opacity-100'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        function closeRegisterModal() {
+            const modal = document.getElementById('register-modal'); const overlay = document.getElementById('register-overlay'); const content = document.getElementById('register-content');
+            overlay.classList.add('opacity-0'); content.classList.remove('scale-100', 'opacity-100'); content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = ''; }, 300);
+        }
+        function toggleAccordion(btn) {
+            const content = btn.nextElementSibling; const chevron = btn.querySelector('.chevron');
+            content.classList.toggle('hidden'); chevron.classList.toggle('rotate-180');
+        }
+
+        // === ПОВНА БАЗА СМАКІВ/ТЕКСТУР ===
+        const texturesDB = {
+            'shoko_drops': { name: 'Шоколад (дропси)', img: 'https://nashsmak.com.ua/storage/sub_category_images/IwKxRoLDxXVCabe2wx8ONpV38XjpE3aUj6LULOFv.webp' },
+            'choco': { name: 'Какао-крем', img: 'https://nashsmak.com.ua/storage/sub_category_images/ACkffVrDkQMqUgmm07qctZlo3ZeSTig46IvG3LhM.png' },
+            'shoko_creme': { name: 'Шоко креме', img: 'https://nashsmak.com.ua/storage/sub_category_images/VLym8keYAlFohbJVUQmC1HTtVqKE35QH7nOiZYGl.webp' },
+            'apricot': { name: 'Абрикос', img: 'https://nashsmak.com.ua/storage/sub_category_images/wQbGq1tuAXU8fFQBTVsFS7xHUcCFAiTW7GpS4kOu.webp' },
+            'peach': { name: 'Персик', img: 'https://png.pngtree.com/png-clipart/20240319/original/pngtree-gouache-peach-jam-png-image_14623348.png' },
+            'apple': { name: 'Яблуко', img: 'https://nashsmak.com.ua/storage/sub_category_images/yH6x6duzvEvDD2VFDLKO7VuF8yqrvQ3MTlbEkxKG.webp' },
+            'orange': { name: 'Апельсин', img: 'https://nashsmak.com.ua/storage/sub_category_images/OF1ROOsViZVGM1lrdYOQbBSUQ1HcVRR8ryP3ekYu.webp' },
+            'cherry': { name: 'Вишня', img: 'https://nashsmak.com.ua/storage/sub_category_images/3iuucMibXz5glP38zNtm7CygiJ46GnW5sJEhPTgQ.webp' },
+            'strawberry': { name: 'Полуниця', img: 'https://png.pngtree.com/png-clipart/20250531/original/pngtree-jar-of-strawberry-jam-png-image_21102208.png' },
+            'condensed': { name: 'Згущене молоко', img: 'https://nashsmak.com.ua/storage/sub_category_images/tasty_65b16053b3ba6.png' },
+            'baked_milk': { name: 'Пряжене молоко', img: 'https://images.prom.ua/2195496997_w640_h640_2195496997.jpg' },
+            'toffee': { name: 'Тоффі карамель', img: 'https://istbea.com/wp-content/uploads/2025/10/Toffee-Caramel.jpg' },
+            'creme': { name: 'Креме', img: 'https://nashsmak.com.ua/storage/sub_category_images/oA80QyqnaB0LsJnwNxRK29LBwtKeLr7DVV0W86Z6.png' },
+            'coconut': { name: 'Кокос', img: 'https://img.freepik.com/free-psd/halfopened-coconut-shell-showcasing-its-creamy-white-interior-small-bite-taken-out-it-its-delectable-treat-image-portrays-freshness-tropical-vibes_191095-78031.jpg?semt=ais_hybrid&w=740&q=80' },
+            'nut': { name: 'Горіхи', img: 'https://nashsmak.com.ua/storage/sub_category_images/ug3PWW2cP1OjeIalTpkp29qoPxeBqgeexP3GaQ1U.png' },
+            'pistachio': { name: 'Фісташка', img: 'https://png.pngtree.com/png-vector/20241123/ourmid/pngtree-pistachio-nuts-falling-png-image_14547874.png' },
+            'shoko_cherry': { name: 'Шоко вишня', img: 'https://nashsmak.com.ua/storage/sub_category_images/1FuSbuWIahsnYktHsSctGm9V8DKtafUHlyTYyhpR.png' },
+            'shoko_orange': { name: 'Шоко апельсин', img: 'https://nashsmak.com.ua/storage/sub_category_images/8Sg2wY4slGUTcJbJQ3dILSaWMCS8nqCJ2Hl4gL2s.png' },
+            'creme_apricot': { name: 'Креме абрикос', img: 'https://nashsmak.com.ua/storage/sub_category_images/oGSmHLqPN6TeLhkfMBkkpPmHKovEtbQjl0QmHhBI.png' },
+            'double_creme': { name: 'Дабл крем', img: 'https://nashsmak.com.ua/storage/sub_category_images/6dXZ9iIAM8uQSM1bHCppQhX9WDMvllubgxznGT7f.png' },
+            'creme_strawberry': { name: 'Креме полуниця', img: 'https://nashsmak.com.ua/storage/sub_category_images/ohiWyCVizEndz7WCUj8wpLylzz7Jq37iR1dNlvsi.png' },
+            'peanut_condensed': { name: 'Арахіс згущене', img: 'https://nashsmak.com.ua/storage/sub_category_images/AXL7BSHIOgpUQQxeXOgGuCwqdmyiNiqNrKCuVRjx.png' },
+            'poppy_condensed': { name: 'Мак згущене', img: 'https://nashsmak.com.ua/storage/sub_category_images/hEXwpJV7zjjaFbOWlm6d8BJueUfWwdHoOlefPsnJ.png' },
+            'shoko_pistachio': { name: 'Шоко фісташка', img: 'https://png.pngtree.com/png-vector/20250811/ourmid/pngtree-realistic-pistachio-nuts-dropping-in-rich-dark-chocolate-splash-effect-png-image_16979108.webp' },
+            'cinnamon': { name: 'Кориця', img: 'https://nashsmak.com.ua/storage/sub_category_images/MYr6w31DShsXtwoMK9b3GzZNe5X4WGkmGQ10Bx4P.png' },
+            'sugar': { name: 'Цукор', img: 'https://nashsmak.com.ua/storage/sub_category_images/tasty_65b276d1f3156.png' },
+            'poppy': { name: 'Мак', img: 'https://nashsmak.com.ua/storage/sub_category_images/vMktj44wXB8D7NG9cbBo9i7tjVKH8eGtrG7v0m5A.png' },
+            'raisin': { name: 'Родзинки', img: 'https://nashsmak.com.ua/storage/sub_category_images/TNF2VYkC93I5e7cimnTTOfGza9NwQvKzv0BCK0oS.png' }
+        };
+
+        const flavorGroups = [
+            { id: 'choc', title: 'Шоколадні', items: ['shoko_drops', 'choco', 'shoko_creme'] },
+            { id: 'fruit', title: 'Фруктові', items: ['apricot', 'peach', 'apple', 'orange'] },
+            { id: 'berry', title: 'Ягідні', items: ['cherry', 'strawberry'] },
+            { id: 'milk', title: 'Молочні та Кремові', items: ['condensed', 'baked_milk', 'toffee', 'creme', 'coconut'] },
+            { id: 'nuts', title: 'Горіхові', items: ['nut', 'pistachio'] },
+            { id: 'double', title: 'Подвійні', items: ['shoko_cherry', 'shoko_orange', 'creme_apricot', 'double_creme', 'creme_strawberry', 'peanut_condensed', 'poppy_condensed', 'shoko_pistachio'] },
+            { id: 'spices', title: 'Додатки', items: ['cinnamon', 'sugar', 'poppy', 'raisin'] }
+        ];
+
+        const featuresDB = [ "До посту", "Без меду", "Без горіхів", "Без лактози", "Без яєць", "Без молока", "Без шоколаду" ];
+        const categoriesDB = ["Всі", "Набори", "Печиво", "Донати", "Мафіни"];
+
+        // === БАЗА ТОВАРІВ (КАТАЛОГ) ===
+        const catalog = [
+            { 
+                id: 1, category: "Мафіни", title: "Мафін (на вибір)", description: "Ніжні бісквітні мафіни з великим вибором авторських начинок.", 
+                image: "https://nashsmak.com.ua/storage/goods_images/cwzIyIxbtqgsEPNhhMUKFktc5qAVsvKlXTz9pbq0.webp", 
+                badges: [{ text: "Бестселер", type: "solid" }], 
+                textures: [
+                    'creme', 'choco', 'condensed', 'raisin', 'nut', 
+                    'strawberry', 'peach', 'shoko_creme', 'coconut', 
+                    'shoko_cherry', 'double_creme', 'toffee'
+                ], 
+                variants: [{ qty: 12, price: 250, weight: 600 }, { qty: 24, price: 450, weight: 1200 }], 
+                features: ["Без меду"], inStock: true 
+            },
+            { id: 2, category: "Печиво", title: "Печиво “Джайв”", description: "Хрустке печиво з насиченим смаком какао та шоколадними дропсами.", image: "https://nashsmak.com.ua/storage/goods_images/CAiGkyHZhRMUjHH1rAiHxWGoWhn93XEpGZwmKXd3.webp", badges: [], textures: ['shoko_drops', 'choco'], variants: [{ qty: 15, price: 140, weight: 450 }, { qty: 30, price: 260, weight: 900 }], features: ["Без меду"], inStock: true },
+            { id: 3, category: "Донати", title: "Донат “Ягідний”", description: "Ніжний пухкий донат з ароматною вишневою або полуничною начинкою.", image: "https://nashsmak.com.ua/storage/goods_images/4DSuE8ktKknMgVA8kfaavnuWdZnvB5Hh2FziA5Y7.webp", badges: [{ text: "Новинка", type: "outline" }], textures: ['strawberry', 'cherry'], variants: [{ qty: 6, price: 150, weight: 420 }, { qty: 12, price: 280, weight: 840 }], features: ["Без горіхів", "До посту", "Без меду"], inStock: true },
+            { id: 4, category: "Печиво", title: "Печиво з родзинками", description: "Класичне світле печиво з додаванням меду та солодких родзинок.", image: "https://nashsmak.com.ua/storage/goods_images/zM0WYDIu9djVc1l9RJyzh7QNQ0e59oPR6TK5pVqV.webp", badges: [], textures: ['raisin', 'cinnamon'], variants: [{ qty: 20, price: 180, weight: 500 }], features: ["Без шоколаду"], inStock: true },
+            { id: 5, category: "Набори", title: "Бокс “Великодній”", description: "Святковий набір асорті для всієї родини.", image: "https://nashsmak.com.ua/storage/goods_images/NiZ5ovoJhmiU8l6DKrXeCpT2PLAO0Z3o7DvKrmYw.webp", badges: [{ text: "Лімітовано", type: "solid" }], textures: ['choco', 'condensed', 'nut', 'apricot', 'cherry', 'apple', 'orange'], variants: [{ qty: 32, price: 800, weight: 1200 }], features: [], inStock: false },
+            { id: 6, category: "Мафіни", title: "Мафін “Подвійний смак”", description: "Дуже шоколадний мафін з подвійними начинками.", image: "https://nashsmak.com.ua/storage/goods_images/vxOAePXw5N1imUEo0TtzMsGbL5WdwY15I3LwiZnX.webp", badges: [], textures: ['shoko_cherry', 'shoko_orange', 'creme_apricot', 'double_creme'], variants: [{ qty: 6, price: 120, weight: 450 }, { qty: 12, price: 230, weight: 900 }], features: ["Без горіхів", "Без меду"], inStock: true },
+            { id: 7, category: "Печиво", title: "Печиво “Білочка”", description: "Ніжне пісочне печиво з горішками та шоколадною глазур'ю.", image: "https://nashsmak.com.ua/storage/goods_images/UgrtNCi8Ac3NP7lWudQAiprQRp7VgKzN19VPW9Zm.jpg", badges: [{ text: "Класика", type: "outline" }], textures: ['nut', 'pistachio'], variants: [{ qty: 12, price: 160, weight: 400 }, { qty: 24, price: 310, weight: 800 }], features: [], inStock: true },
+            { id: 8, category: "Донати", title: "Донат “Фруктовий”", description: "Повітряний донат, щедро наповнений фруктовим джемом.", image: "https://nashsmak.com.ua/storage/goods_images/OCgariOMCVVrZYY6vwP0gTU6qO5GTBfOHtzcV3jU.webp", badges: [], textures: ['peach', 'apricot', 'apple'], variants: [{ qty: 6, price: 150, weight: 420 }], features: ["Без горіхів", "Без шоколаду"], inStock: true },
+            { id: 9, category: "Донати", title: "Донат “Карамельний”", description: "М'яке тісто з яскраво вираженим смаком.", image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=400&auto=format&fit=crop", badges: [], textures: ['toffee', 'condensed'], variants: [{ qty: 6, price: 160, weight: 420 }], features: ["Без шоколаду"], inStock: true }
+        ];
+
+        let state = {
+            category: 'Всі', textures: new Set(), features: new Set(), selectedVariants: {}, selectedFlavors: {}, cart: [], currentPage: 1, itemsPerPage: 6
+        };
+
+        function init() {
+            catalog.forEach(p => { state.selectedVariants[p.id] = 0; state.selectedFlavors[p.id] = p.textures.length > 0 ? p.textures[0] : null; });
+            renderFilters(); triggerRenderCatalogWithLoader();
+        }
+
+        // === КОШИК ТА ДОДАВАННЯ ===
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar'); const overlay = document.getElementById('cart-overlay');
+            if (sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full'); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); document.body.style.overflow = 'hidden'; renderCart();
+            } else {
+                sidebar.classList.add('translate-x-full'); overlay.classList.add('opacity-0'); setTimeout(() => overlay.classList.add('hidden'), 300); document.body.style.overflow = '';
+            }
+        }
+
+        function addToCart(btn, pId, event) {
+            if(event) event.stopPropagation(); // Зупиняємо перехід на сторінку товару
+            
+            const product = catalog.find(p => p.id == pId); const vIdx = state.selectedVariants[pId]; const variant = product.variants[vIdx];
+            const flavorId = state.selectedFlavors[pId]; const flavorName = flavorId && texturesDB[flavorId] ? texturesDB[flavorId].name : '';
+            const cartItemId = `${pId}-${vIdx}-${flavorId}`;
+            const existingItem = state.cart.find(item => item.cartId === cartItemId);
+            
+            if (existingItem) existingItem.amount += 1;
+            else state.cart.push({ cartId: cartItemId, id: pId, title: product.title, image: product.image, qtyInfo: variant.qty, price: variant.price, flavor: flavorName, amount: 1 });
+
+            const counter = document.getElementById('global-cart-counter');
+            counter.innerText = state.cart.reduce((sum, item) => sum + item.amount, 0);
+            counter.classList.remove('cart-pop'); void counter.offsetWidth; counter.classList.add('cart-pop');
+            showToast(product.title, product.image);
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<iconify-icon icon="solar:check-circle-bold" class="text-lg"></iconify-icon> Додано`;
+            btn.classList.replace('bg-brand-green', 'bg-brand-dark');
+            setTimeout(() => { btn.innerHTML = originalText; btn.classList.replace('bg-brand-dark', 'bg-brand-green'); }, 1500);
+        }
+
+        function updateCartAmount(cartId, delta) {
+            const item = state.cart.find(i => i.cartId === cartId); if (!item) return;
+            item.amount += delta; if (item.amount <= 0) state.cart = state.cart.filter(i => i.cartId !== cartId);
+            document.getElementById('global-cart-counter').innerText = state.cart.reduce((sum, item) => sum + item.amount, 0); renderCart();
+        }
+
+        function removeFromCart(cartId) {
+            state.cart = state.cart.filter(i => i.cartId !== cartId);
+            document.getElementById('global-cart-counter').innerText = state.cart.reduce((sum, item) => sum + item.amount, 0); renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items'); const totalEl = document.getElementById('cart-total');
+            if (state.cart.length === 0) {
+                container.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-brand-dark/40 gap-4 mt-20"><iconify-icon icon="solar:cart-cross-broken" class="text-6xl"></iconify-icon><p class="font-bold text-lg">Кошик порожній</p></div>`;
+                totalEl.innerText = '0 ₴'; return;
+            }
+            let totalSum = 0;
+            container.innerHTML = state.cart.map(item => {
+                const itemTotalPrice = item.price * item.amount; totalSum += itemTotalPrice;
+                const metaText = item.flavor ? `${item.qtyInfo} шт • ${item.flavor}` : `${item.qtyInfo} шт`;
+                return `
+                    <div class="flex gap-4 p-4 bg-brand-light rounded-[1rem] border border-brand-dark/5 relative">
+                        <img src="${item.image}" class="w-20 h-20 rounded-xl object-cover bg-white shadow-sm flex-shrink-0">
+                        <div class="flex flex-col flex-grow justify-between">
+                            <div class="pr-6"><h4 class="font-bold text-brand-dark text-sm leading-tight mb-1">${item.title}</h4><span class="text-[11px] font-bold text-brand-dark/50 bg-white px-2 py-0.5 rounded-md border border-brand-dark/5">${metaText}</span></div>
+                            <div class="flex justify-between items-end mt-2">
+                                <div class="text-lg font-extrabold text-brand-dark font-nunito">${itemTotalPrice} ₴</div>
+                                <div class="flex items-center gap-3 bg-white border border-brand-dark/10 rounded-full px-2 py-1">
+                                    <button onclick="updateCartAmount('${item.cartId}', -1)" class="w-6 h-6 flex items-center justify-center text-brand-dark/60 hover:text-brand-dark font-bold">-</button>
+                                    <span class="text-sm font-bold text-brand-dark w-4 text-center">${item.amount}</span>
+                                    <button onclick="updateCartAmount('${item.cartId}', 1)" class="w-6 h-6 flex items-center justify-center text-brand-dark/60 hover:text-brand-dark font-bold">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart('${item.cartId}')" class="absolute top-4 right-4 text-brand-dark/30 hover:text-[#FF3B30] transition"><iconify-icon icon="solar:trash-bin-trash-bold" class="text-lg"></iconify-icon></button>
+                    </div>`;
+            }).join('');
+            totalEl.innerText = `${totalSum} ₴`;
+        }
+
+        // === ФІЛЬТРИ ===
+        function renderFilters() {
+            document.getElementById('filter-categories').innerHTML = categoriesDB.map(c => `<button onclick="setCategory('${c}')" class="filter-pill px-4 py-2 rounded-full border border-brand-dark/10 text-xs font-bold transition-colors ${state.category === c ? 'bg-brand-green text-brand-white border-brand-green' : 'bg-brand-light text-brand-dark hover:border-brand-green'}">${c}</button>`).join('');
+            document.getElementById('filter-features').innerHTML = featuresDB.map(f => `<button onclick="toggleFeature('${f}')" id="feat-btn-${f.replace(/\s+/g, '-')}" class="filter-pill px-4 py-2 rounded-full border border-brand-dark/10 text-xs font-bold text-brand-dark hover:border-brand-green transition ${state.features.has(f) ? 'bg-brand-green text-brand-white border-brand-green' : 'bg-brand-light'}">${f}</button>`).join('');
+
+            let flavorsHTML = '';
+            flavorGroups.forEach(group => {
+                let groupBtns = group.items.map(id => {
+                    const t = texturesDB[id]; if(!t) return '';
+                    const isActive = state.textures.has(id);
+                    return `<div class="py-2 border-b border-brand-dark/5 last:border-0"><button onclick="toggleTexture(this, '${id}')" class="w-full flex justify-between items-center text-xs font-bold text-brand-dark hover:text-brand-green transition"><span>${t.name}</span><iconify-icon icon="solar:check-circle-bold" class="text-lg transition-opacity duration-200 ${isActive ? 'opacity-100 text-brand-green' : 'opacity-0'}"></iconify-icon></button></div>`;
+                }).join('');
+                if (groupBtns) {
+                    flavorsHTML += `<div class="mb-2 bg-brand-light rounded-2xl px-4 py-1"><button class="w-full flex justify-between items-center text-xs font-bold text-brand-dark py-3 transition hover:text-brand-green" onclick="toggleAccordion(this)">${group.title} <iconify-icon icon="solar:alt-arrow-down-bold" class="chevron transition-transform duration-300"></iconify-icon></button><div class="hidden pb-2">${groupBtns}</div></div>`;
+                }
+            });
+            document.getElementById('filter-flavors-grouped').innerHTML = flavorsHTML;
+            updateClearButtonVisibility();
+        }
+
+        function updateClearButtonVisibility() {
+            const btn = document.getElementById('clear-filters-btn');
+            if (state.category !== 'Всі' || state.textures.size > 0 || state.features.size > 0) btn.classList.remove('hidden');
+            else btn.classList.add('hidden');
+        }
+
+        function clearFilters() { state.category = 'Всі'; state.textures.clear(); state.features.clear(); state.currentPage = 1; renderFilters(); triggerRenderCatalogWithLoader(); }
+        function setCategory(c) { state.category = c; state.currentPage = 1; renderFilters(); triggerRenderCatalogWithLoader(); }
+        function toggleTexture(btn, id) { 
+            if (state.textures.has(id)) state.textures.delete(id); else state.textures.add(id);
+            const icon = btn.querySelector('iconify-icon');
+            if(state.textures.has(id)) { icon.classList.remove('opacity-0'); icon.classList.add('opacity-100', 'text-brand-green'); } else { icon.classList.add('opacity-0'); icon.classList.remove('opacity-100', 'text-brand-green'); }
+            state.currentPage = 1; updateClearButtonVisibility(); triggerRenderCatalogWithLoader();
+        }
+        function toggleFeature(f) {
+            if (state.features.has(f)) state.features.delete(f); else state.features.add(f);
+            state.currentPage = 1; renderFilters(); triggerRenderCatalogWithLoader();
+        }
+
+        function getFilteredProducts() {
+            return catalog.filter(p => {
+                if (state.category !== 'Всі' && p.category !== state.category) return false;
+                if (state.textures.size > 0 && !p.textures.some(t => state.textures.has(t))) return false;
+                if (state.features.size > 0 && ![...state.features].every(f => p.features.includes(f))) return false;
+                return true;
+            });
+        }
+
+        function changePage(page) { state.currentPage = page; triggerRenderCatalogWithLoader(); window.scrollTo({ top: document.getElementById('catalog-grid').offsetTop - 100, behavior: 'smooth' }); }
+
+        // === ВЗАЄМОДІЯ З КАРТКОЮ ===
+        function selectFlavor(pId, tId, event) {
+            if(event) event.stopPropagation(); // Зупиняємо перехід на сторінку товару
+            state.selectedFlavors[pId] = tId;
+            const p = catalog.find(x => x.id == pId);
+            if(p) {
+                p.textures.forEach(t => {
+                    const el = document.getElementById(`card-flavor-${pId}-${t}`);
+                    if (!el) return;
+                    const ring = el.querySelector('.texture-card-ring');
+                    if (t === tId) { ring.classList.remove('border-transparent'); ring.classList.add('border-brand-green'); } 
+                    else { ring.classList.add('border-transparent'); ring.classList.remove('border-brand-green'); }
+                });
+            }
+        }
+
+        function changeVariant(pId, vIdx, event) {
+            if(event) event.stopPropagation(); // Зупиняємо перехід на сторінку товару
+            state.selectedVariants[pId] = vIdx;
+            const p = catalog.find(x => x.id == pId);
+            const variant = p.variants[vIdx];
+            
+            // Залишаємо font-extrabold text-3xl і для ціни
+            document.getElementById(`price-${pId}`).innerHTML = `<span class="text-3xl font-extrabold text-brand-dark font-nunito">${variant.price}₴</span><span class="text-sm text-brand-dark/40 font-bold ml-1">/${variant.qty}шт</span>`;
+            document.getElementById(`weight-${pId}`).innerText = `${variant.weight} г`;
+
+            p.variants.forEach((v, idx) => {
+                const btn = document.getElementById(`var-btn-${pId}-${idx}`);
+                if (idx === vIdx) { btn.classList.add('border-brand-green', 'text-brand-green'); btn.classList.remove('border-brand-dark/10', 'text-brand-dark/60'); } 
+                else { btn.classList.remove('border-brand-green', 'text-brand-green'); btn.classList.add('border-brand-dark/10', 'text-brand-dark/60'); }
+            });
+        }
+
+        function toggleFavorite(btn, event) {
+            if(event) event.stopPropagation(); // Зупиняємо перехід на сторінку товару
+            const icon = btn.querySelector('iconify-icon');
+            if (icon.getAttribute('icon') === 'solar:heart-linear') { icon.setAttribute('icon', 'solar:heart-bold'); icon.classList.replace('text-brand-green', 'text-[#FF3B30]'); } 
+            else { icon.setAttribute('icon', 'solar:heart-linear'); icon.classList.replace('text-[#FF3B30]', 'text-brand-green'); }
+        }
+
+        function showToast(productName, imgUrl) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-brand-white border border-brand-dark/10 shadow-2xl rounded-2xl p-4 flex items-center gap-4 toast-enter pointer-events-auto max-w-[300px]';
+            toast.innerHTML = `<div class="w-12 h-12 rounded-xl bg-brand-light flex-shrink-0 overflow-hidden"><img src="${imgUrl}" class="w-full h-full object-cover"></div><div><p class="text-[10px] uppercase tracking-widest font-bold text-brand-green mb-0.5">Додано у кошик</p><p class="text-sm font-bold text-brand-dark leading-tight line-clamp-1">${productName}</p></div>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.replace('toast-enter', 'toast-exit'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        // Drag-to-scroll для десктопу
+        function initDragScroll() {
+            const sliders = document.querySelectorAll('.drag-scroll');
+            let isDown = false; let startX; let scrollLeft;
+
+            sliders.forEach(slider => {
+                slider.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    slider.classList.add('cursor-grabbing');
+                    startX = e.pageX - slider.offsetLeft;
+                    scrollLeft = slider.scrollLeft;
+                });
+                slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('cursor-grabbing'); });
+                slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('cursor-grabbing'); });
+                slider.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    slider.scrollLeft = scrollLeft - walk;
+                });
+            });
+        }
+
+        function triggerRenderCatalogWithLoader() {
+            const grid = document.getElementById('catalog-grid');
+            grid.innerHTML = `<div class="col-span-full py-20 flex flex-col items-center justify-center gap-4"><iconify-icon icon="line-md:loading-twotone-loop" class="text-5xl text-brand-green"></iconify-icon><p class="text-sm font-bold text-brand-dark/40 uppercase tracking-widest">Шукаємо солодощі...</p></div>`;
+            document.getElementById('pagination-container').innerHTML = ''; 
+            setTimeout(renderCatalog, 300);
+        }
+
+        // === РЕНДЕР КАТАЛОГУ (З КЛІКАБЕЛЬНОЮ КАРТКОЮ) ===
+        function renderCatalog() {
+            const grid = document.getElementById('catalog-grid');
+            const filtered = getFilteredProducts();
+            const totalPages = Math.ceil(filtered.length / state.itemsPerPage);
+            const start = (state.currentPage - 1) * state.itemsPerPage;
+            const paginated = filtered.slice(start, start + state.itemsPerPage);
+
+            if (paginated.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-20 text-center text-brand-dark/50 font-bold text-lg">За вашими фільтрами нічого не знайдено.</div>`;
+                document.getElementById('pagination-container').innerHTML = '';
+                return;
+            }
+
+            grid.innerHTML = paginated.map((p, index) => {
+                const vIdx = state.selectedVariants[p.id];
+                const activeVar = p.variants[vIdx];
+                const isOutOfStock = p.inStock === false; 
+                const imgClass = isOutOfStock ? 'grayscale opacity-60' : 'group-hover/card:scale-105';
+                
+                const selectedFlavor = state.selectedFlavors[p.id];
+                const btnClass = isOutOfStock ? 'bg-brand-dark/10 text-brand-dark/40 cursor-not-allowed' : 'bg-brand-green text-brand-white hover:bg-brand-dark shadow-sm';
+                const btnText = isOutOfStock ? 'Немає в наявності' : 'В кошик';
+                const btnAction = isOutOfStock ? '' : `onclick="addToCart(this, ${p.id}, event)"`;
+                
+                // Посилання на всю картку товару (тільки для першого для прикладу, або для всіх)
+                const linkHTML = p.id === 1 ? 'href="product.html"' : 'href="#"';
+
+                const badges = p.badges || [];
+                const badgesHTML = badges.map(b => b.type === 'solid' ? `<span class="bg-[#00BD13] text-brand-white px-3 py-1 rounded-[8px] text-[10px] uppercase font-bold tracking-wider shadow-sm">${b.text}</span>` : `<span class="bg-brand-white/90 backdrop-blur-sm border border-brand-green text-brand-green px-3 py-1 rounded-[8px] text-[10px] uppercase font-bold tracking-wider">${b.text}</span>`).join('');
+
+                const flavorsHTML = p.textures.map((tId, i) => {
+                    const t = texturesDB[tId]; if (!t) return ''; 
+                    const isActive = selectedFlavor === tId;
+                    const ringClass = isActive ? 'border-brand-green' : 'border-transparent';
+
+                    let tooltipPosClass = 'bottom-full mb-1.5 left-1/2 -translate-x-1/2';
+                    let arrowPosClass = 'top-full -mt-1 left-1/2 -translate-x-1/2';
+                    if (i === 0) {
+                        tooltipPosClass = 'bottom-full mb-1.5 left-0 translate-x-0';
+                        arrowPosClass = 'top-full -mt-1 left-6 -translate-x-1/2';
+                    } else if (i === p.textures.length - 1 && p.textures.length > 2) {
+                        tooltipPosClass = 'bottom-full mb-1.5 right-0 left-auto translate-x-0';
+                        arrowPosClass = 'top-full -mt-1 right-6 left-auto translate-x-1/2';
+                    }
+
+                    // event.stopPropagation() додано, щоб клік на смак не переводив на іншу сторінку
+                    return `
+                        <div id="card-flavor-${p.id}-${tId}" onclick="selectFlavor('${p.id}', '${tId}', event)" class="relative group/flavor cursor-pointer flex flex-col items-center flex-shrink-0 snap-start">
+                            <div class="texture-card-ring w-12 h-12 rounded-full p-0.5 border-[2px] ${ringClass} group-hover/flavor:border-brand-green transition-colors bg-white shadow-sm relative z-10">
+                                <img src="${t.img}" class="w-full h-full rounded-full object-cover">
+                            </div>
+                            <div class="absolute ${tooltipPosClass} bg-[#2A2A2A] text-brand-white text-[11px] font-bold px-3 py-1.5 rounded-[8px] whitespace-nowrap z-50 shadow-lg pointer-events-none opacity-0 invisible group-hover/flavor:opacity-100 group-hover/flavor:visible transition-all duration-200">
+                                ${t.name}
+                                <div class="absolute ${arrowPosClass} w-2 h-2 bg-[#2A2A2A] rotate-45"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                const variantsHTML = p.variants.map((v, idx) => {
+                    const activeClasses = idx === vIdx ? 'border-brand-green text-brand-green' : 'border-brand-dark/10 text-brand-dark/60';
+                    return `<button id="var-btn-${p.id}-${idx}" onclick="changeVariant(${p.id}, ${idx}, event)" class="px-4 py-1.5 rounded-full border text-xs font-bold transition-colors hover:border-brand-green hover:text-brand-green ${activeClasses}">${v.qty} шт</button>`;
+                }).join('');
+
+                return `
+                    <div id="card-${p.id}" class="product-card group/card flex flex-col bg-brand-white rounded-[2rem] p-4 border border-brand-dark/5 hover:shadow-2xl relative card-animate" style="animation-delay: ${index * 0.05}s">
+                        
+                        <a ${linkHTML} class="absolute inset-0 z-10 rounded-[2rem]" aria-label="Перейти до товару"></a>
+
+                        <div id="img-bg-${p.id}" class="product-img aspect-[4/3] rounded-[1.5rem] bg-brand-beige mb-4 overflow-hidden relative z-0">
+                            <div class="absolute top-4 left-4 flex gap-1.5 flex-wrap z-20 w-2/3 pointer-events-none">
+                                ${badgesHTML}
+                                ${isOutOfStock ? `<span class="bg-brand-dark text-brand-white px-3 py-1 rounded-[8px] text-[10px] uppercase font-bold tracking-wider shadow-sm">Розпродано</span>` : ''}
+                            </div>
+                            <button onclick="toggleFavorite(this, event)" class="absolute top-4 right-4 w-9 h-9 bg-white/90 backdrop-blur-md rounded-full z-20 flex items-center justify-center shadow-sm hover:text-brand-green transition">
+                                <iconify-icon icon="solar:heart-linear" class="text-xl"></iconify-icon>
+                            </button>
+                            <img src="${p.image}" class="object-cover w-full h-full mix-blend-multiply transition duration-500 ${imgClass}">
+                        </div>
+
+                        <div class="flex overflow-x-auto hide-scroll drag-scroll gap-2 px-1 pt-12 -mt-8 mb-5 relative z-20 items-center snap-x pb-2">
+                            ${flavorsHTML}
+                        </div>
+
+                        <div class="px-2 space-y-1 mb-6 flex-grow flex flex-col justify-start relative z-0 pointer-events-none">
+                            <h3 class="font-nunito text-[20px] font-bold text-brand-dark tracking-tight leading-tight group-hover/card:text-brand-green transition-colors">${p.title}</h3>
+                            <p class="text-[13px] text-brand-dark/60 line-clamp-2 leading-relaxed font-medium">${p.description}</p>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 px-2 mb-6 mt-auto relative z-20">
+                            ${p.variants.length > 1 ? variantsHTML : '<span class="text-xs font-bold text-brand-dark/40 py-1.5 pointer-events-none">Фіксована кількість</span>'}
+                        </div>
+
+                        <div class="flex justify-between items-baseline mb-5 px-2 pt-4 border-t border-brand-dark/5 relative z-0 pointer-events-none">
+                            <div class="flex items-baseline" id="price-${p.id}">
+                                <span class="text-3xl font-extrabold text-brand-dark font-nunito">${activeVar.price}₴</span>
+                                <span class="text-sm text-brand-dark/40 font-bold ml-1">/${activeVar.qty}шт</span>
+                            </div>
+                            <div class="text-[13px] font-bold text-brand-dark/40" id="weight-${p.id}">${activeVar.weight} г</div>
+                        </div>
+                        
+                        <div class="mt-auto flex justify-center px-2 relative z-20">
+                            <button id="btn-add-${p.id}" ${btnAction} class="btn-add w-full py-3.5 rounded-[1rem] text-base font-bold transition-colors flex items-center justify-center gap-2 ${btnClass}">
+                                ${btnText}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (totalPages > 1) {
+                let pagHTML = `<div class="relative z-20 flex gap-2">`;
+                pagHTML += `<button onclick="changePage(${Math.max(1, state.currentPage - 1)})" class="w-10 h-10 rounded-full flex items-center justify-center border border-brand-dark/10 text-brand-dark hover:border-brand-green hover:text-brand-green transition"><iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon></button>`;
+                for(let i=1; i<=totalPages; i++) pagHTML += `<button onclick="changePage(${i})" class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition ${i === state.currentPage ? 'bg-brand-green text-brand-white shadow-md' : 'border border-brand-dark/10 text-brand-dark hover:border-brand-green hover:text-brand-green'}">${i}</button>`;
+                pagHTML += `<button onclick="changePage(${Math.min(totalPages, state.currentPage + 1)})" class="w-10 h-10 rounded-full flex items-center justify-center border border-brand-dark/10 text-brand-dark hover:border-brand-green hover:text-brand-green transition"><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></button>`;
+                pagHTML += `</div>`;
+                document.getElementById('pagination-container').innerHTML = pagHTML;
+            } else {
+                document.getElementById('pagination-container').innerHTML = '';
+            }
+
+            initDragScroll(); // Ініціалізація перетягування мишкою після рендеру
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформлення замовлення — Наш Смак</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                nunito: ['Nunito', 'sans-serif'],
+                montserrat: ['Montserrat', 'sans-serif'],
+              },
+              colors: {
+                brand: {
+                    dark: '#470D04',
+                    green: '#00BD13',
+                    yellow: '#FFCD05',
+                    light: '#FFF7EE',
+                    beige: '#F6F4EE',
+                    white: '#FFFFFF',
+                    gray: '#F6F4EE'
+                }
+              }
+            },
+          },
+        }
+    </script>
+    
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <style>
+      iconify-icon { display: inline-flex; align-items: center; justify-content: center; }
+      
+      .hide-scroll::-webkit-scrollbar { display: none; }
+      .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      .custom-radio:checked + div {
+          border-color: #00BD13;
+          background-color: rgba(0, 189, 19, 0.05);
+      }
+      .custom-radio:checked + div .radio-dot {
+          background-color: #00BD13;
+          border-color: #00BD13;
+      }
+      .custom-radio:checked + div .radio-dot::after {
+          transform: scale(1);
+      }
+
+      @keyframes modalPop {
+          0% { transform: scale(0.95); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+      }
+      .animate-modal-pop { animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-brand-light text-brand-dark font-montserrat antialiased selection:bg-brand-green selection:text-brand-white">
+
+    <div class="bg-brand-green text-brand-white text-xs font-semibold text-center py-2.5 px-4 tracking-wide z-50 relative">
+        Свіжі солодощі з доставкою за 2-3 дні. Безкоштовна доставка від 1000 грн.
+    </div>
+
+    <header class="bg-brand-white/95 backdrop-blur-md border-b border-brand-dark/10 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="w-1/4">
+                <a href="index.html" class="font-nunito text-3xl font-extrabold tracking-tight text-brand-green uppercase flex items-center">Наш Смак</a>
+            </div>
+
+            <nav class="hidden lg:flex w-2/4 justify-center gap-8 items-center font-montserrat">
+                <div class="group relative py-8">
+                    <a href="catalog.html" class="text-sm font-semibold text-brand-dark hover:text-brand-green transition inline-flex items-center justify-center gap-1.5">
+                        Каталог <iconify-icon icon="solar:alt-arrow-down-bold" class="text-[10px] mt-0.5"></iconify-icon>
+                    </a>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-brand-white border border-brand-dark/10 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-2">
+                        <a href="constructor.html" class="px-4 py-3 text-sm text-brand-green font-bold hover:bg-brand-light rounded-xl transition flex items-center gap-2">
+                            <iconify-icon icon="solar:box-minimalistic-bold" class="text-lg"></iconify-icon> Конструктор боксів
+                        </a>
+                        <div class="h-px bg-brand-dark/5 my-1 mx-2"></div>
+                        <a href="catalog.html" class="block px-4 py-2.5 text-sm font-medium text-brand-dark hover:bg-brand-light hover:text-brand-green rounded-xl transition">Подарункові набори</a>
+                        <a href="catalog.html" class="block px-4 py-2.5 text-sm font-medium text-brand-dark hover:bg-brand-light hover:text-brand-green rounded-xl transition">Печиво</a>
+                        <a href="catalog.html" class="block px-4 py-2.5 text-sm font-medium text-brand-dark hover:bg-brand-light hover:text-brand-green rounded-xl transition">Донати</a>
+                        <a href="catalog.html" class="block px-4 py-2.5 text-sm font-medium text-brand-dark hover:bg-brand-light hover:text-brand-green rounded-xl transition">Мафіни</a>
+                    </div>
+                </div>
+                <a href="about.html" class="text-sm font-semibold text-brand-dark hover:text-brand-green transition">Про нас</a>
+                <a href="#" class="text-sm font-semibold text-brand-dark hover:text-brand-green transition">Оплата і доставка</a>
+                <a href="#" class="text-sm font-semibold text-brand-dark hover:text-brand-green transition">Контакти</a>
+            </nav>
+
+            <div class="w-1/4 flex items-center justify-end gap-6 font-montserrat">
+                <div class="flex gap-4 text-brand-dark">
+                    <a href="index.html" class="w-10 h-10 rounded-full hover:bg-brand-light hover:text-brand-green transition relative inline-flex items-center justify-center">
+                        <iconify-icon icon="solar:home-linear" class="text-xl"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1400px] mx-auto px-6 py-8 md:py-12">
+        <nav class="flex text-[13px] font-bold text-brand-dark/50 mb-8 font-montserrat">
+            <a href="index.html" class="hover:text-brand-green transition">Головна</a>
+            <span class="mx-2">/</span>
+            <a href="catalog.html" class="hover:text-brand-green transition">Кошик</a>
+            <span class="mx-2">/</span>
+            <span class="text-brand-dark">Оформлення замовлення</span>
+        </nav>
+
+        <h1 class="font-nunito text-4xl font-extrabold tracking-tight text-brand-dark mb-10">Оформлення замовлення</h1>
+
+        <form class="grid lg:grid-cols-12 gap-12 items-start" onsubmit="event.preventDefault(); showSuccessModal();">
+            
+            <div class="lg:col-span-7 space-y-10">
+                
+                <div class="bg-brand-white p-6 md:p-8 rounded-[2rem] border border-brand-dark/5 shadow-sm space-y-6">
+                    <h2 class="font-nunito text-2xl font-bold text-brand-dark flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-brand-green text-white flex items-center justify-center text-sm">1</span> 
+                        Ваші дані
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-brand-dark/80">Ім'я та Прізвище *</label>
+                            <input type="text" required placeholder="Іван Іваненко" class="w-full px-5 py-4 rounded-xl bg-brand-light border border-brand-dark/10 text-sm font-medium focus:outline-none focus:border-brand-green transition">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-brand-dark/80">Телефон *</label>
+                            <input type="tel" required placeholder="+38 (000) 000-00-00" class="w-full px-5 py-4 rounded-xl bg-brand-light border border-brand-dark/10 text-sm font-medium focus:outline-none focus:border-brand-green transition">
+                        </div>
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="text-sm font-semibold text-brand-dark/80">Email (необов'язково)</label>
+                            <input type="email" placeholder="email@example.com" class="w-full px-5 py-4 rounded-xl bg-brand-light border border-brand-dark/10 text-sm font-medium focus:outline-none focus:border-brand-green transition">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-white p-6 md:p-8 rounded-[2rem] border border-brand-dark/5 shadow-sm space-y-6">
+                    <h2 class="font-nunito text-2xl font-bold text-brand-dark flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-brand-green text-white flex items-center justify-center text-sm">2</span> 
+                        Доставка
+                    </h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="delivery_method" class="custom-radio sr-only" checked onchange="toggleDelivery('np')">
+                            <div class="border-2 border-brand-dark/10 rounded-xl p-4 flex gap-4 transition hover:border-brand-green">
+                                <div class="radio-dot w-5 h-5 rounded-full border-2 border-brand-dark/20 flex items-center justify-center mt-0.5 shrink-0 relative transition">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-white scale-0 transition-transform duration-200 z-10"></div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-brand-dark text-[15px]">Нова Пошта</h4>
+                                    <p class="text-[13px] text-brand-dark/60 font-medium mt-1">За тарифами перевізника</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="delivery_method" class="custom-radio sr-only" onchange="toggleDelivery('pickup')">
+                            <div class="border-2 border-brand-dark/10 rounded-xl p-4 flex gap-4 transition hover:border-brand-green">
+                                <div class="radio-dot w-5 h-5 rounded-full border-2 border-brand-dark/20 flex items-center justify-center mt-0.5 shrink-0 relative transition">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-white scale-0 transition-transform duration-200 z-10"></div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-brand-dark text-[15px]">Самовивіз</h4>
+                                    <p class="text-[13px] text-brand-dark/60 font-medium mt-1">Безкоштовно з пекарні</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="np-fields" class="space-y-4 pt-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-brand-dark/80">Місто *</label>
+                            <div class="relative">
+                                <iconify-icon icon="solar:map-point-linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-brand-dark/40 text-xl"></iconify-icon>
+                                <input type="text" placeholder="Київ" class="w-full pl-12 pr-5 py-4 rounded-xl bg-brand-light border border-brand-dark/10 text-sm font-medium focus:outline-none focus:border-brand-green transition">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-brand-dark/80">Відділення / Поштомат *</label>
+                            <div class="relative">
+                                <iconify-icon icon="solar:box-linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-brand-dark/40 text-xl"></iconify-icon>
+                                <input type="text" placeholder="Відділення №1" class="w-full pl-12 pr-5 py-4 rounded-xl bg-brand-light border border-brand-dark/10 text-sm font-medium focus:outline-none focus:border-brand-green transition">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-white p-6 md:p-8 rounded-[2rem] border border-brand-dark/5 shadow-sm space-y-6">
+                    <h2 class="font-nunito text-2xl font-bold text-brand-dark flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-brand-green text-white flex items-center justify-center text-sm">3</span> 
+                        Оплата
+                    </h2>
+                    
+                    <div class="flex flex-col gap-4">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="payment_method" class="custom-radio sr-only" checked>
+                            <div class="border-2 border-brand-dark/10 rounded-xl p-4 px-5 flex items-center gap-4 transition hover:border-brand-green">
+                                <div class="radio-dot w-5 h-5 rounded-full border-2 border-brand-dark/20 flex items-center justify-center shrink-0 relative transition">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-white scale-0 transition-transform duration-200 z-10"></div>
+                                </div>
+                                <iconify-icon icon="solar:card-bold-duotone" class="text-2xl text-brand-dark/60"></iconify-icon>
+                                <h4 class="font-bold text-brand-dark text-[15px]">Оплата карткою онлайн</h4>
+                            </div>
+                        </label>
+
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="payment_method" class="custom-radio sr-only">
+                            <div class="border-2 border-brand-dark/10 rounded-xl p-4 px-5 flex items-center gap-4 transition hover:border-brand-green">
+                                <div class="radio-dot w-5 h-5 rounded-full border-2 border-brand-dark/20 flex items-center justify-center shrink-0 relative transition">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-white scale-0 transition-transform duration-200 z-10"></div>
+                                </div>
+                                <iconify-icon icon="solar:wallet-money-bold-duotone" class="text-2xl text-brand-dark/60"></iconify-icon>
+                                <h4 class="font-bold text-brand-dark text-[15px]">Оплата при отриманні</h4>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="space-y-2 pt-4">
+                        <label class="text-sm font-semibold text-brand-dark/80">Коментар до замовлення</label>
+                        <textarea rows="3" placeholder="Ваші побажання..." class="w-full px-5 py-4 rounded-xl bg-brand-light border border-brand-dark/10 text-sm font-medium focus:outline-none focus:border-brand-green transition resize-none"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:col-span-5">
+                <div class="bg-brand-white p-6 md:p-8 rounded-[2rem] border border-brand-dark/5 shadow-xl lg:sticky lg:top-28">
+                    <h3 class="font-nunito text-2xl font-bold text-brand-dark mb-6">Ваше замовлення</h3>
+                    
+                    <div id="delivery-accent" class="bg-brand-green/10 border border-brand-green/20 rounded-xl p-4 mb-6 flex items-center gap-4 transition-all">
+                        <div class="w-10 h-10 rounded-full bg-brand-green text-white flex items-center justify-center shrink-0 shadow-sm" id="delivery-accent-icon">
+                            <iconify-icon icon="solar:routing-2-bold" class="text-xl"></iconify-icon>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-brand-dark" id="delivery-accent-title">Безкоштовна доставка!</h4>
+                            <p class="text-xs font-medium text-brand-dark/70 mt-0.5" id="delivery-accent-desc">Ваше замовлення понад 1000 ₴, тому доставку сплачуємо ми 🎁</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6 max-h-[300px] overflow-y-auto hide-scroll">
+                        <div class="flex gap-4 items-center">
+                            <img src="https://nashsmak.com.ua/storage/goods_images/k22Sei1U4WMmzX5maLsctmAWHlFJKBcCyygcfZAu.webp" class="w-16 h-16 rounded-xl object-cover border border-brand-dark/5 shrink-0">
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-sm text-brand-dark leading-tight mb-1">Бокс «Великодній»</h4>
+                                <p class="text-[11px] font-bold text-brand-dark/50">1 шт</p>
+                            </div>
+                            <span class="font-extrabold text-brand-dark font-nunito whitespace-nowrap">800 ₴</span>
+                        </div>
+                        <div class="flex gap-4 items-center">
+                            <img src="https://nashsmak.com.ua/storage/goods_images/CAiGkyHZhRMUjHH1rAiHxWGoWhn93XEpGZwmKXd3.webp" class="w-16 h-16 rounded-xl object-cover border border-brand-dark/5 shrink-0">
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-sm text-brand-dark leading-tight mb-1">Печиво “Джайв”</h4>
+                                <p class="text-[11px] font-bold text-brand-dark/50">2 шт</p>
+                            </div>
+                            <span class="font-extrabold text-brand-dark font-nunito whitespace-nowrap">280 ₴</span>
+                        </div>
+                    </div>
+
+                    <div class="border-y border-brand-dark/10 py-6 mb-6 space-y-4">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[13px] font-bold text-brand-dark/60 uppercase tracking-widest">Промокод</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="promo-input" placeholder="Промокод" class="flex-grow px-4 py-3 rounded-xl bg-brand-light border border-brand-dark/10 text-sm font-medium focus:outline-none focus:border-brand-green transition uppercase">
+                                <button type="button" onclick="applyPromo()" class="px-5 bg-brand-dark text-white rounded-xl text-sm font-bold hover:bg-brand-green transition">Застосувати</button>
+                            </div>
+                            <p id="promo-message" class="text-xs font-bold mt-1 hidden"></p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 mb-8">
+                        <div class="flex justify-between text-sm font-medium text-brand-dark/80">
+                            <span>Вартість товарів:</span>
+                            <span id="subtotal-amount">1080 ₴</span>
+                        </div>
+                        
+                        <div id="discount-row" class="hidden justify-between text-sm font-medium text-brand-green">
+                            <span>Знижка за промокодом:</span>
+                            <span id="discount-amount" class="font-bold">- 0 ₴</span>
+                        </div>
+
+                        <div class="flex justify-between text-sm font-medium text-brand-dark/80 items-center">
+                            <span>Доставка:</span>
+                            <span id="delivery-cost-text" class="text-brand-green font-bold bg-brand-green/10 px-2 py-1 rounded-md">Безкоштовно</span>
+                        </div>
+                        <div class="flex justify-between items-end pt-4 mt-4 border-t border-brand-dark/5">
+                            <span class="text-sm font-bold text-brand-dark/60 uppercase tracking-widest">Разом до сплати:</span>
+                            <span id="final-total" class="text-3xl font-extrabold text-brand-dark font-nunito">1080 ₴</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-green text-brand-white py-4 rounded-[1rem] text-lg font-bold hover:bg-brand-dark transition-colors shadow-lg shadow-brand-green/20 flex items-center justify-center gap-2">
+                        Підтвердити замовлення <iconify-icon icon="solar:check-circle-bold" class="text-xl"></iconify-icon>
+                    </button>
+                    
+                    <p class="text-[11px] text-brand-dark/40 text-center mt-4 font-medium px-4">
+                        Натискаючи кнопку, ви погоджуєтеся з <a href="#" class="underline hover:text-brand-green">публічною офертою</a>.
+                    </p>
+                </div>
+            </div>
+            
+        </form>
+    </main>
+
+    <div id="success-modal" class="fixed inset-0 z-[130] hidden items-center justify-center p-4 bg-brand-dark/60 backdrop-blur-sm">
+        <div class="bg-brand-white w-full max-w-md rounded-[24px] shadow-2xl p-8 flex flex-col items-center text-center relative animate-modal-pop">
+            <div class="w-24 h-24 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mb-6 shadow-[0_0_0_10px_rgba(0,189,19,0.05)]">
+                <iconify-icon icon="solar:check-circle-bold" class="text-6xl"></iconify-icon>
+            </div>
+            <h2 class="font-nunito text-3xl font-extrabold tracking-tight text-brand-dark mb-3">Замовлення прийнято!</h2>
+            <p class="text-sm text-brand-dark/70 font-medium leading-relaxed mb-8">
+                Дякуємо за довіру! Номер вашого замовлення: <strong class="text-brand-dark">#45821</strong>. Ми відправимо деталі на ваш номер телефону.
+            </p>
+            <a href="index.html" class="w-full inline-flex items-center justify-center px-6 py-4 rounded-xl bg-brand-green text-white text-base font-bold hover:bg-brand-dark transition-all shadow-sm focus:outline-none">
+                Повернутися на головну
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-brand-dark text-brand-light pt-20 pb-8 font-montserrat rounded-t-[3rem] mt-10 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+        <div class="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+            <div class="lg:col-span-2 space-y-6">
+                <a href="index.html" class="font-nunito text-3xl font-extrabold tracking-tight text-white uppercase">Наш Смак</a>
+                <p class="text-sm text-brand-light/80 max-w-sm leading-relaxed font-medium">Створюємо солодощі, які об'єднують родини за одним столом.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-brand-yellow mb-6 text-sm tracking-widest uppercase">Каталог</h4>
+                <ul class="space-y-4 text-sm font-medium text-brand-light/60">
+                    <li><a href="constructor.html" class="hover:text-brand-green transition">Конструктор наборів</a></li>
+                    <li><a href="catalog.html" class="hover:text-brand-green transition">Подарункові набори</a></li>
+                    <li><a href="catalog.html" class="hover:text-brand-green transition">Печиво</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-brand-yellow mb-6 text-sm tracking-widest uppercase">Клієнтам</h4>
+                <ul class="space-y-4 text-sm font-medium text-brand-light/60">
+                    <li><a href="about.html" class="hover:text-brand-green transition">Про нас</a></li>
+                    <li><a href="#" class="hover:text-brand-green transition">Оплата і доставка</a></li>
+                    <li><a href="#" class="hover:text-brand-green transition">Повернення</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-brand-yellow mb-6 text-sm tracking-widest uppercase">Контакти</h4>
+                <ul class="space-y-4 text-sm font-medium text-brand-light/60">
+                    <li>+38 067 675 02 89</li>
+                    <li>shopnashsmak@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-[1400px] mx-auto px-6 pt-8 border-t border-white/10 text-xs text-brand-light/50 text-center">
+            <p>© 2026 Наш Смак. Всі права захищено.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDelivery(method) {
+            const npFields = document.getElementById('np-fields');
+            if (method === 'pickup') {
+                npFields.classList.add('hidden');
+            } else {
+                npFields.classList.remove('hidden');
+            }
+        }
+
+        function showSuccessModal() {
+            const modal = document.getElementById('success-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ЛОГІКА ДЛЯ ПРОМОКОДУ ТА БЕЗКОШТОВНОЇ ДОСТАВКИ
+        let originalSubtotal = 1080;
+        let discountAmount = 0;
+
+        function applyPromo() {
+            const input = document.getElementById('promo-input');
+            const messageEl = document.getElementById('promo-message');
+            const code = input.value.trim().toUpperCase();
+
+            messageEl.classList.remove('hidden');
+
+            if (code === 'FRIEND-20') {
+                discountAmount = Math.round(originalSubtotal * 0.20);
+                messageEl.textContent = 'Промокод успішно застосовано! Знижка 20%';
+                messageEl.className = 'text-xs font-bold mt-2 text-brand-green block';
+            } else if (code === '') {
+                discountAmount = 0;
+                messageEl.classList.add('hidden');
+            } else {
+                discountAmount = 0;
+                messageEl.textContent = 'Такого промокоду не існує';
+                messageEl.className = 'text-xs font-bold mt-2 text-[#FF3B30] block';
+            }
+            
+            updateTotals();
+        }
+
+        function updateTotals() {
+            const finalTotal = originalSubtotal - discountAmount;
+            
+            // Оновлення блоку знижки
+            const discountRow = document.getElementById('discount-row');
+            if (discountAmount > 0) {
+                discountRow.classList.remove('hidden');
+                discountRow.classList.add('flex');
+                document.getElementById('discount-amount').textContent = `- ${discountAmount} ₴`;
+            } else {
+                discountRow.classList.add('hidden');
+                discountRow.classList.remove('flex');
+            }
+
+            // Оновлення блоку безкоштовної доставки
+            const deliveryAccent = document.getElementById('delivery-accent');
+            const accentIcon = document.getElementById('delivery-accent-icon');
+            const accentTitle = document.getElementById('delivery-accent-title');
+            const accentDesc = document.getElementById('delivery-accent-desc');
+            const deliveryCostText = document.getElementById('delivery-cost-text');
+
+            if (finalTotal >= 1000) {
+                // Доставка безкоштовна
+                deliveryAccent.className = 'bg-brand-green/10 border border-brand-green/20 rounded-xl p-4 mb-6 flex items-center gap-4 transition-all';
+                accentIcon.className = 'w-10 h-10 rounded-full bg-brand-green text-white flex items-center justify-center shrink-0 shadow-sm';
+                accentIcon.innerHTML = '<iconify-icon icon="solar:routing-2-bold" class="text-xl"></iconify-icon>';
+                accentTitle.textContent = 'Безкоштовна доставка!';
+                accentTitle.className = 'text-sm font-bold text-brand-dark';
+                accentDesc.textContent = 'Ваше замовлення понад 1000 ₴, тому доставку сплачуємо ми 🎁';
+                
+                deliveryCostText.textContent = 'Безкоштовно';
+                deliveryCostText.className = 'text-brand-green font-bold bg-brand-green/10 px-2 py-1 rounded-md';
+            } else {
+                // Доставка платна
+                const diff = 1000 - finalTotal;
+                deliveryAccent.className = 'bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl p-4 mb-6 flex items-center gap-4 transition-all';
+                accentIcon.className = 'w-10 h-10 rounded-full bg-brand-yellow text-brand-dark flex items-center justify-center shrink-0 shadow-sm';
+                accentIcon.innerHTML = '<iconify-icon icon="solar:box-minimalistic-bold" class="text-xl"></iconify-icon>';
+                accentTitle.textContent = 'Додайте ще трохи!';
+                accentTitle.className = 'text-sm font-bold text-brand-dark';
+                accentDesc.innerHTML = `Додайте товарів ще на <span class="font-bold text-brand-dark">${diff} ₴</span> і отримайте безкоштовну доставку.`;
+                
+                deliveryCostText.textContent = 'За тарифами перевізника';
+                deliveryCostText.className = 'text-brand-dark/70 font-semibold';
+            }
+
+            // Оновлення фінальної суми
+            document.getElementById('final-total').textContent = `${finalTotal} ₴`;
+        }
+
+        // Ініціалізація сум при завантаженні
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTotals();
+        });
+    </script>
+</body>
+</html>
